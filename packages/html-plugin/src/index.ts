@@ -22,7 +22,7 @@ class HtmlPluginStatic {
         const outputDir = path.dirname(outputPath);
 
         // Render slides directly wrapped in their containers
-        const slidePromises = ir.slides.map(async (slide, index) => {
+        const slidePromises = ir.slides.map(async (slide: Slide, index: number) => {
             const bgStyle = await this.getBackgroundCSS(slide.style.background, ir.basePath, offline);
             const slideStyle = `background: ${bgStyle}; color: ${slide.style.color || '#000000'}; font-family: ${slide.style.font_family || 'sans-serif'};`;
 
@@ -31,7 +31,7 @@ class HtmlPluginStatic {
             const layout = getLayout(slide.layout_id, slide.slots.length);
             let yOffset = 0;
             if (slide.title) {
-                const hasTitleSlot = layout?.slots.some(s => s.id === 'title');
+                const hasTitleSlot = layout?.slots.some((s: any) => s.id === 'title');
                 if (!hasTitleSlot) {
                     slideContent += this.renderOptionalTitle(slide.title, slide.style);
                     yOffset = 60;
@@ -39,7 +39,7 @@ class HtmlPluginStatic {
             }
 
             if (layout) {
-                const slotPromises = slide.slots.map(async (content, slotIdx) => {
+                const slotPromises = slide.slots.map(async (content: SlotContent, slotIdx: number) => {
                     const slotDef = layout.slots[slotIdx];
                     if (slotDef) {
                         return this.renderSlot(content, slotDef, slide.style, ir, yOffset, outputDir, offline);
@@ -409,13 +409,13 @@ class HtmlPluginStatic {
                 innerHtml = this.parseMarkdown(content.raw);
             }
         } else if (content.type === 'list') {
-            innerHtml = '<ul>' + content.items.map(i => {
+            innerHtml = '<ul>' + content.items.map((i: any) => {
                 const processedText = i.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 return `<li>${processedText}</li>`;
             }).join('') + '</ul>';
         } else if (content.type === 'table') {
-            innerHtml = '<table>' + content.rows.map(row =>
-                `<tr>${row.map(cell => cell.isHeader ? `<th>${cell.text}</th>` : `<td>${cell.text}</td>`).join('')}</tr>`
+            innerHtml = '<table>' + content.rows.map((row: TableCell[]) =>
+                `<tr>${row.map((cell: TableCell) => cell.isHeader ? `<th>${cell.text}</th>` : `<td>${cell.text}</td>`).join('')}</tr>`
             ).join('') + '</table>';
         } else if (content.type === 'image') {
             const base64 = await this.resolveImageAsBase64(content.src, ir.basePath, offline);

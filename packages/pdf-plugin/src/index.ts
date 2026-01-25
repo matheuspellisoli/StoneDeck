@@ -38,7 +38,7 @@ class PdfPluginStatic {
                 const layout = getLayout(slide.layout_id, slide.slots.length);
                 let yOffset = 0;
                 if (slide.title) {
-                    const hasTitleSlot = layout?.slots.some(s => s.id === 'title');
+                    const hasTitleSlot = layout?.slots.some((s: any) => s.id === 'title');
                     if (!hasTitleSlot) {
                         this.renderOptionalTitle(doc, slide.title, slide.style);
                         yOffset = 60;
@@ -251,7 +251,7 @@ class PdfPluginStatic {
             }
         } else if (content.type === 'list') {
             let currentY = contentY;
-            content.items.forEach(item => {
+            content.items.forEach((item: ListItem) => {
                 const indent = (item.level - 1) * 20;
                 const bullet = this.getBulletChar(item.bullet_type);
                 doc.fontSize(fontSize * 0.9);
