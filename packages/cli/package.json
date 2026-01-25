@@ -1,0 +1,24 @@
+{
+    "name": "@StoneDeck/cli",
+    "version": "0.7.0",
+    "type": "module",
+    "bin": {
+        "stonedeck": "./dist/index.js"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -b",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+        "@StoneDeck/core": "^1.0.0",
+        "@StoneDeck/html-plugin": "^1.0.0",
+        "@StoneDeck/pdf-plugin": "^1.0.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0",
+        "tsx": "^4.7.0"
+    }
+}

@@ -1,0 +1,25 @@
+name: "Academico"
+tokens:
+  colors:
+    primary: "#1a237e"
+    secondary: "#f3e5f5"
+    accent: "#b71c1c"
+    surface: "#fdfbf7"
+    text: "#212121"
+    heading: "#1a237e"
+    table_header: "#e8eaf6"
+  fonts:
+    heading: "Times-Bold"
+    body: "Times-Roman"
+    mono: "Courier"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"

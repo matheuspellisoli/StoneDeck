@@ -1,0 +1,59 @@
+name: Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Scenario 1: Push to Main (Dev Release)
+      - name: Publish Dev Version
+        if: github.ref == 'refs/heads/main'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          SHA_SHORT=$(git rev-parse --short HEAD)
+          DEV_VERSION="0.0.0-dev-${SHA_SHORT}"
+          
+          echo "📝 Setting version to ${DEV_VERSION} for workspaces"
+          npm version ${DEV_VERSION} --workspaces --no-git-tag-version --no-commit-hooks
+          
+          echo "🚀 Publishing to NPM with tag 'dev'"
+          npm publish --workspaces --tag dev --access public
+
+      # Scenario 2: Push Tag (Release Candidate / Staging)
+      # Publishes with 'next' tag. Use promote workflow to set 'latest'.
+      - name: Publish Tagged Version
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          # The version in package.json should generally match the tag (minus v)
+          # We assume the user has already bumped the version in package.json before tagging.
+          
+          echo "🚀 Publishing to NPM with tag 'next'"
+          npm publish --workspaces --tag next --access public

@@ -1,0 +1,40 @@
+name: Promote to Latest
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to promote to latest (e.g. 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Promote Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          VERSION="${{ inputs.version }}"
+          echo "🚀 Promoting version ${VERSION} to 'latest' tag..."
+          
+          PACKAGES=(
+            "@StoneDeck/core"
+            "@StoneDeck/cli"
+            "@StoneDeck/html-plugin"
+            "@StoneDeck/pdf-plugin"
+          )
+          
+          for PKG in "${PACKAGES[@]}"; do
+            echo "👉 Updating dist-tag for ${PKG}..."
+            npm dist-tag add "${PKG}@${VERSION}" latest
+          done
+          
+          echo "✅ Done!"

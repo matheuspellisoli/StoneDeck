@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "paths": {
+      "@StoneDeck/core": [
+        "./packages/core/src/index.ts"
+      ],
+      "@StoneDeck/html-plugin": [
+        "./packages/html-plugin/src/index.ts"
+      ],
+      "@StoneDeck/pdf-plugin": [
+        "./packages/pdf-plugin/src/index.ts"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/cli"
+    },
+    {
+      "path": "./packages/html-plugin"
+    },
+    {
+      "path": "./packages/pdf-plugin"
+    }
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/test",
+    "**/tests",
+    "**/*.test.ts"
+  ]
+}

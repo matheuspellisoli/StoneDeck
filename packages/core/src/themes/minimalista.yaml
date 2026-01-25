@@ -1,0 +1,25 @@
+name: "Minimalista"
+tokens:
+  colors:
+    primary: "#000000"
+    secondary: "#ffffff"
+    accent: "#000000"
+    surface: "#ffffff"
+    text: "#333333"
+    heading: "#000000"
+    muted: "#555555"
+  fonts:
+    heading: "Helvetica-Bold"
+    body: "Helvetica"
+    mono: "Courier New"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 24
+  content_align:
+    horizontal: "left"
+    vertical: "top"

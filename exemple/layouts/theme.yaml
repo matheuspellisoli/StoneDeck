@@ -1,0 +1,13 @@
+name: "StoneDeck Showcase"
+tokens:
+  colors:
+    primary: "#1E293B"
+    secondary: "#334155"
+    accent: "#3B82F6"
+    surface: "#F8FAFC"
+    text: "#0F172A"
+    muted: "#64748B"
+  fonts:
+    heading: "Helvetica-Bold"
+    body: "Helvetica"
+    mono: "Courier"

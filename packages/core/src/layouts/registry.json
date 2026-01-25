@@ -1,0 +1,290 @@
+{
+    "layouts": [
+        {
+            "id": "section-header",
+            "slots": [
+                {
+                    "id": "title",
+                    "x": 50,
+                    "y": 180,
+                    "width": 620,
+                    "height": 60
+                }
+            ]
+        },
+        {
+            "id": "title",
+            "slots": [
+                {
+                    "id": "title",
+                    "x": 50,
+                    "y": 120,
+                    "width": 620,
+                    "height": 100
+                },
+                {
+                    "id": "subtitle",
+                    "x": 50,
+                    "y": 230,
+                    "width": 620,
+                    "height": 80
+                }
+            ]
+        },
+        {
+            "id": "title-and-content",
+            "slots": [
+                {
+                    "id": "title",
+                    "x": 50,
+                    "y": 30,
+                    "width": 620,
+                    "height": 60
+                },
+                {
+                    "id": "body",
+                    "x": 50,
+                    "y": 100,
+                    "width": 620,
+                    "height": 280
+                }
+            ]
+        },
+        {
+            "id": "title-and-content",
+            "slots": [
+                {
+                    "id": "title",
+                    "x": 50,
+                    "y": 30,
+                    "width": 620,
+                    "height": 60
+                },
+                {
+                    "id": "col1",
+                    "x": 50,
+                    "y": 100,
+                    "width": 300,
+                    "height": 280
+                },
+                {
+                    "id": "col2",
+                    "x": 370,
+                    "y": 100,
+                    "width": 300,
+                    "height": 280
+                }
+            ]
+        },
+        {
+            "id": "title-and-content",
+            "slots": [
+                {
+                    "id": "title",
+                    "x": 50,
+                    "y": 30,
+                    "width": 620,
+                    "height": 60
+                },
+                {
+                    "id": "col1",
+                    "x": 50,
+                    "y": 100,
+                    "width": 190,
+                    "height": 280
+                },
+                {
+                    "id": "col2",
+                    "x": 260,
+                    "y": 100,
+                    "width": 190,
+                    "height": 280
+                },
+                {
+                    "id": "col3",
+                    "x": 470,
+                    "y": 100,
+                    "width": 190,
+                    "height": 280
+                }
+            ]
+        },
+        {
+            "id": "title-and-content",
+            "slots": [
+                {
+                    "id": "title",
+                    "x": 50,
+                    "y": 30,
+                    "width": 620,
+                    "height": 60
+                },
+                {
+                    "id": "card1",
+                    "x": 50,
+                    "y": 100,
+                    "width": 300,
+                    "height": 135
+                },
+                {
+                    "id": "card2",
+                    "x": 370,
+                    "y": 100,
+                    "width": 300,
+                    "height": 135
+                },
+                {
+                    "id": "card3",
+                    "x": 50,
+                    "y": 245,
+                    "width": 300,
+                    "height": 135
+                },
+                {
+                    "id": "card4",
+                    "x": 370,
+                    "y": 245,
+                    "width": 300,
+                    "height": 135
+                }
+            ]
+        },
+        {
+            "id": "content",
+            "slots": [
+                {
+                    "id": "body",
+                    "x": 50,
+                    "y": 50,
+                    "width": 620,
+                    "height": 300
+                }
+            ]
+        },
+        {
+            "id": "content",
+            "slots": [
+                {
+                    "id": "col1",
+                    "x": 50,
+                    "y": 50,
+                    "width": 300,
+                    "height": 300
+                },
+                {
+                    "id": "col2",
+                    "x": 370,
+                    "y": 50,
+                    "width": 300,
+                    "height": 300
+                }
+            ]
+        },
+        {
+            "id": "content",
+            "slots": [
+                {
+                    "id": "col1",
+                    "x": 50,
+                    "y": 50,
+                    "width": 190,
+                    "height": 300
+                },
+                {
+                    "id": "col2",
+                    "x": 260,
+                    "y": 50,
+                    "width": 190,
+                    "height": 300
+                },
+                {
+                    "id": "col3",
+                    "x": 470,
+                    "y": 50,
+                    "width": 190,
+                    "height": 300
+                }
+            ]
+        },
+        {
+            "id": "content",
+            "slots": [
+                {
+                    "id": "card1",
+                    "x": 50,
+                    "y": 50,
+                    "width": 300,
+                    "height": 140
+                },
+                {
+                    "id": "card2",
+                    "x": 370,
+                    "y": 50,
+                    "width": 300,
+                    "height": 140
+                },
+                {
+                    "id": "card3",
+                    "x": 50,
+                    "y": 210,
+                    "width": 300,
+                    "height": 140
+                },
+                {
+                    "id": "card4",
+                    "x": 370,
+                    "y": 210,
+                    "width": 300,
+                    "height": 140
+                }
+            ]
+        },
+        {
+            "id": "content",
+            "slots": [
+                {
+                    "id": "card1",
+                    "x": 50,
+                    "y": 50,
+                    "width": 190,
+                    "height": 140
+                },
+                {
+                    "id": "card2",
+                    "x": 260,
+                    "y": 50,
+                    "width": 190,
+                    "height": 140
+                },
+                {
+                    "id": "card3",
+                    "x": 470,
+                    "y": 50,
+                    "width": 190,
+                    "height": 140
+                },
+                {
+                    "id": "card4",
+                    "x": 50,
+                    "y": 210,
+                    "width": 190,
+                    "height": 140
+                },
+                {
+                    "id": "card5",
+                    "x": 260,
+                    "y": 210,
+                    "width": 190,
+                    "height": 140
+                },
+                {
+                    "id": "card6",
+                    "x": 470,
+                    "y": 210,
+                    "width": 190,
+                    "height": 140
+                }
+            ]
+        }
+    ]
+}
