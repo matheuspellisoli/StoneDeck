@@ -15,7 +15,7 @@ title: Hello V2
         expect(slides).toHaveLength(1);
         expect(slides[0]?.layout_id).toBe('title-slide');
         expect(slides[0]?.title).toBe('Hello V2');
-        expect((slides[0]?.slots[0] as any)?.raw.trim()).toBe('# Content Here');
+        expect((slides[0]?.slots[0] as { raw: string })?.raw.trim()).toBe('# Content Here');
     });
 
     it('should detect front matter inside :::slide', () => {
@@ -36,8 +36,8 @@ Right
         expect(slides[0]?.layout_id).toBe('two-columns');
         expect(slides[0]?.style.color).toBe('red');
         expect(slides[0]?.slots).toHaveLength(2);
-        expect((slides[0]?.slots[0] as any)?.raw.trim()).toBe('Left');
-        expect((slides[0]?.slots[1] as any)?.raw.trim()).toBe('Right');
+        expect((slides[0]?.slots[0] as { raw: string })?.raw.trim()).toBe('Left');
+        expect((slides[0]?.slots[1] as { raw: string })?.raw.trim()).toBe('Right');
     });
 
     it('should ignore content outside :::slide blocks (V1 format)', () => {

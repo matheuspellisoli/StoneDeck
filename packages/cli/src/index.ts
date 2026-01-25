@@ -124,8 +124,9 @@ async function handleExport(args: string[], legacy = false) {
         }
 
         console.log('✅ Done!');
-    } catch (e: any) {
-        console.error(`❌ Build failed: ${e.message}`);
+    } catch (e: unknown) {
+        const message = e instanceof Error ? e.message : String(e);
+        console.error(`❌ Build failed: ${message}`);
         process.exit(1);
     }
 }
@@ -151,8 +152,9 @@ async function handlePreview(args: string[]) {
 
             await handleExport(exportArgs, false);
             console.log(`👀 Preview available at: ${outputPath}`);
-        } catch (e: any) {
-            console.error(`❌ Preview update failed: ${e.message}`);
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : String(e);
+            console.error(`❌ Preview update failed: ${message}`);
         }
     };
 

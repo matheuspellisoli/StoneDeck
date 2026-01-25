@@ -57,7 +57,7 @@ export class ThemeLoader {
         return this.deepResolve(slideStyle, tokens);
     }
 
-    private static deepResolve(obj: any, tokens: any): any {
+    private static deepResolve(obj: unknown, tokens: any): any {
         if (typeof obj !== 'object' || obj === null) {
             // Token resolution for strings
             if (typeof obj === 'string') {
@@ -73,13 +73,13 @@ export class ThemeLoader {
         const resolved: any = {};
         for (const key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                resolved[key] = this.deepResolve(obj[key], tokens);
+                resolved[key] = this.deepResolve((obj as any)[key], tokens); // eslint-disable-line @typescript-eslint/no-explicit-any
             }
         }
         return resolved;
     }
 
-    private static resolveTokenValue(value: string, tokens: any): any {
+    private static resolveTokenValue(value: string, tokens: any): unknown { // eslint-disable-line @typescript-eslint/no-explicit-any
         // 1. Try resolving as a color token (e.g., "primary")
         if (tokens.colors?.[value]) return tokens.colors[value];
 
@@ -99,7 +99,7 @@ export class ThemeLoader {
      * 1em ≈ 12pt (assuming 16px base)
      * RFC 4.1: "Todas as unidades finais devem ser em pt (Pontos)."
      */
-    private static convertToPt(value: string | number): any {
+    private static convertToPt(value: string | number): number | string {
         if (typeof value === 'number') return value;
 
         const match = value.match(/^([\d.]+)(px|em|rem|pt|%)?$/);

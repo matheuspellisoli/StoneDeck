@@ -26,13 +26,13 @@ export class MetricsCalculator {
      * Calculates the height of a string given a font and width.
      */
     calculateTextHeight(text: string, style: SlideStyle, maxWidth: number): number {
-        const fontSize = style.font_size || 18; // Default font size
-        const font = style.font_family || 'Helvetica'; // Default font
+        const fontSize = (style.font_size as number) || 18; // Default font size
+        const font = (style.font_family as string) || 'Helvetica'; // Default font
 
         try {
             this.doc.font(font).fontSize(fontSize);
             return this.doc.heightOfString(text, { width: maxWidth });
-        } catch (e) {
+        } catch (_e) {
             // Fallback font if the requested one fails
             this.doc.font('Helvetica').fontSize(fontSize);
             return this.doc.heightOfString(text, { width: maxWidth });
@@ -51,7 +51,7 @@ export class MetricsCalculator {
 
         for (const line of lines) {
             if (!line.trim()) {
-                totalHeight += (style.font_size || 18) * 0.5; // Half line height for empty lines
+                totalHeight += ((style.font_size as number) || 18) * 0.5; // Half line height for empty lines
                 continue;
             }
             totalHeight += this.calculateTextHeight(line, style, maxWidth);

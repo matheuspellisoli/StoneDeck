@@ -20,7 +20,7 @@ export function validateLayout(id: string, slotCount: number): { valid: boolean;
 
 export function getLayout(id: string, slotCount: number): Layout | undefined {
     // 1. Try Registry First (Static definitions override dynamic)
-    const layout = registry.layouts.find((l: any) => l.id === id && l.slots.length === slotCount);
+    const layout = registry.layouts.find((l: Layout) => l.id === id && l.slots.length === slotCount);
     if (layout) return layout;
 
     // 2. Try Dynamic Generator

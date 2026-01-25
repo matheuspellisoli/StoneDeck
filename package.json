@@ -6,16 +6,26 @@
     "packages/*"
   ],
   "scripts": {
+    "clean": "rm -rf node_modules package-lock.json && npm run clean:dist",
+    "clean:dist": "rm -rf dist packages/*/dist packages/*/*.tsbuildinfo coverage",
+    "prebuild": "npm run clean:dist",
     "build": "tsc -b",
+    "ci-check": "npm run clean && npm install && npm run build -- --verbose",
+    "type-check": "tsc -b",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
+    "eslint": "^9.39.2",
+    "globals": "^17.1.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.1",
     "tsx": "^4.7.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.53.1"
   }
 }

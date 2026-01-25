@@ -18,31 +18,34 @@ export function parseManifesto(content: string): { manifesto: StoneDeckManifesto
     const yamlContent = match[1]!;
     const remainingContent = content.slice(match[0].length).trim();
 
-    let data: any;
+    let data: unknown;
     try {
         data = YAML.parse(yamlContent);
-    } catch (e: any) {
-        throw new ManifestoValidationError(`Failed to parse Manifesto YAML: ${e.message}`);
+    } catch (e: unknown) {
+        const message = e instanceof Error ? e.message : String(e);
+        throw new ManifestoValidationError(`Failed to parse Manifesto YAML: ${message}`);
     }
 
-    if (data?.StoneDeck !== true) {
+    const typedData = data as StoneDeckManifesto;
+
+    if (typedData?.StoneDeck !== true) {
         throw new ManifestoValidationError('Manifesto must contain "StoneDeck: true" to be processed.');
     }
 
-    if (!data.title) {
+    if (!typedData.title) {
         throw new ManifestoValidationError('Manifesto must contain a "title".');
     }
 
-    if (!data.theme) {
+    if (!typedData.theme) {
         throw new ManifestoValidationError('Manifesto must contain a "theme".');
     }
 
     const manifesto: StoneDeckManifesto = {
         StoneDeck: true,
-        title: data.title,
-        subtitle: data.subtitle,
-        theme: data.theme,
-        author: data.author,
+        title: typedData.title,
+        subtitle: typedData.subtitle,
+        theme: typedData.theme,
+        author: typedData.author,
     };
 
     return { manifesto, remainingContent };

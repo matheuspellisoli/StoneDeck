@@ -1,7 +1,7 @@
 import PDFDocument from 'pdfkit';
 import * as fs from 'fs';
 import * as path from 'path';
-import { StoneDeckIR, SlotContent, ListItem, TableCell, getLayout, ExportPlugin } from '@stonedeck/core';
+import { StoneDeckIR, SlotContent, ListItem, TableCell, getLayout, ExportPlugin, LayoutSlot, SlideStyle } from '@stonedeck/core';
 
 export class PdfPlugin implements ExportPlugin {
     name = "PDF Plugin";
@@ -18,53 +18,59 @@ export class PdfPlugin implements ExportPlugin {
 
 class PdfPluginStatic {
     static async generate(ir: StoneDeckIR, outputPath: string): Promise<void> {
-        return new Promise(async (resolve, reject) => {
-            const doc = new PDFDocument({
-                size: [720, 405],
-                margins: { top: 0, left: 0, bottom: 0, right: 0 },
-                autoFirstPage: false
-            });
+        return new Promise((resolve, reject) => {
+            (async () => {
+                try {
+                    const doc = new PDFDocument({
+                        size: [720, 405],
+                        margins: { top: 0, left: 0, bottom: 0, right: 0 },
+                        autoFirstPage: false
+                    });
 
-            const stream = fs.createWriteStream(outputPath);
-            doc.pipe(stream);
+                    const stream = fs.createWriteStream(outputPath);
+                    doc.pipe(stream);
 
-            for (const [index, slide] of ir.slides.entries()) {
-                doc.addPage();
+                    for (const [index, slide] of ir.slides.entries()) {
+                        doc.addPage();
 
-                // 1. Render Background
-                await this.renderBackground(doc, slide.style, ir.basePath);
+                        // 1. Render Background
+                        await this.renderBackground(doc, slide.style, ir.basePath);
 
-                // 2. Render Optional Title
-                const layout = getLayout(slide.layout_id, slide.slots.length);
-                let yOffset = 0;
-                if (slide.title) {
-                    const hasTitleSlot = layout?.slots.some((s: any) => s.id === 'title');
-                    if (!hasTitleSlot) {
-                        this.renderOptionalTitle(doc, slide.title, slide.style);
-                        yOffset = 60;
-                    }
-                }
+                        // 2. Render Optional Title
+                        const layout = getLayout(slide.layout_id, slide.slots.length);
+                        let yOffset = 0;
+                        if (slide.title) {
+                            const hasTitleSlot = layout?.slots.some((s: LayoutSlot) => s.id === 'title');
+                            if (!hasTitleSlot) {
+                                this.renderOptionalTitle(doc, slide.title, slide.style);
+                                yOffset = 60;
+                            }
+                        }
 
-                // 3. Render Slots
-                if (layout) {
-                    for (const [slotIdx, content] of slide.slots.entries()) {
-                        const slotDef = layout.slots[slotIdx];
-                        if (slotDef) {
-                            await this.renderSlotContent(doc, content, slotDef, slide.style, ir, yOffset);
+                        // 3. Render Slots
+                        if (layout) {
+                            for (const [slotIdx, content] of slide.slots.entries()) {
+                                const slotDef = layout.slots[slotIdx];
+                                if (slotDef) {
+                                    await this.renderSlotContent(doc, content, slotDef, slide.style, ir, yOffset);
+                                }
+                            }
+                        } else {
+                            console.warn(`Layout ${slide.layout_id} not found for slide ${index + 1}`);
                         }
                     }
-                } else {
-                    console.warn(`Layout ${slide.layout_id} not found for slide ${index + 1}`);
-                }
-            }
 
-            doc.end();
-            stream.on('finish', resolve);
-            stream.on('error', reject);
+                    doc.end();
+                    stream.on('finish', resolve);
+                    stream.on('error', reject);
+                } catch (e) {
+                    reject(e);
+                }
+            })();
         });
     }
 
-    private static async renderBackground(doc: PDFKit.PDFDocument, style: any, basePath: string): Promise<void> {
+    private static async renderBackground(doc: PDFKit.PDFDocument, style: SlideStyle, basePath: string): Promise<void> {
         const bg = style.background;
         if (!bg) {
             doc.rect(0, 0, 720, 405).fill('#FFFFFF');
@@ -75,15 +81,15 @@ class PdfPluginStatic {
             doc.rect(0, 0, 720, 405).fill(bg.value);
         } else if (bg.type === 'gradient' && bg.colors) {
             const grad = doc.linearGradient(0, 0, 0, 405);
-            bg.colors.forEach((c: string, i: number) => {
-                grad.stop(i / (bg.colors.length - 1), c);
+            bg.colors!.forEach((c: string, i: number) => {
+                grad.stop(i / (bg.colors!.length - 1), c);
             });
             doc.rect(0, 0, 720, 405).fill(grad);
         } else if (bg.type === 'image' && bg.src) {
             try {
                 const imgBuffer = await this.resolveImageBuffer(bg.src, basePath);
                 if (imgBuffer) {
-                    const options: any = {
+                    const options: Record<string, unknown> = {
                         align: 'center',
                         valign: 'center'
                     };
@@ -101,14 +107,14 @@ class PdfPluginStatic {
         }
     }
 
-    private static async renderSlotContent(doc: PDFKit.PDFDocument, content: SlotContent, slot: any, style: any, ir: StoneDeckIR, yOffset: number = 0): Promise<void> {
+    private static async renderSlotContent(doc: PDFKit.PDFDocument, content: SlotContent, slot: LayoutSlot, style: SlideStyle, ir: StoneDeckIR, yOffset: number = 0): Promise<void> {
         const fontSize = style.font_size || 18;
         const fontFamily = style.font_family || 'Helvetica';
         const color = style.color || '#000000';
 
         let drawY = slot.y + yOffset;
-        let bottomLimit = 405 - 15;
-        let availableHeight = bottomLimit - drawY;
+        const bottomLimit = 405 - 15;
+        const availableHeight = bottomLimit - drawY;
         let safeHeight = Math.min(slot.height, availableHeight);
 
         let contentX = slot.x;
@@ -176,7 +182,7 @@ class PdfPluginStatic {
                     try {
                         const imgBuffer = await this.resolveImageBuffer(src, ir.basePath);
                         if (imgBuffer) {
-                            const imgOpts: any = {
+                            const imgOpts: Record<string, unknown> = {
                                 align: 'center',
                                 valign: 'center'
                             };
@@ -191,16 +197,11 @@ class PdfPluginStatic {
                             doc.image(imgBuffer, contentX, currentY, imgOpts);
                             currentY += 150;
                         }
-                    } catch (e) {
+                    } catch (_e) {
                         // warning
                     }
                     continue;
                 }
-
-                // Note: Logic for text rendering matches previous robust implementation via this.renderStyledText
-                // ... (Assuming following code is preserved by correct range replacement or re-included if overflow) ... 
-                // wait, if I replace the whole block, I must include the rest of the markdown logic.
-                // The previous tool call showed lines 144-241. I need to include them.
 
                 let currentFontSize = fontSize;
                 let currentFont = fontFamily;
@@ -266,7 +267,7 @@ class PdfPluginStatic {
             try {
                 const imgBuffer = await this.resolveImageBuffer(content.src, ir.basePath);
                 if (imgBuffer) {
-                    const imgOpts: any = {
+                    const imgOpts: Record<string, unknown> = {
                         align: 'center',
                         valign: 'center'
                     };
@@ -277,7 +278,7 @@ class PdfPluginStatic {
                     }
                     doc.image(imgBuffer, contentX, contentY, imgOpts);
                 }
-            } catch (e) {
+            } catch (_e) {
                 doc.fontSize(10).fillColor('red').text(`Error loading image: ${content.src}`, contentX, contentY);
             }
         }
@@ -299,22 +300,22 @@ class PdfPluginStatic {
     }
 
 
-    private static renderOptionalTitle(doc: PDFKit.PDFDocument, title: string, style: any): void {
+    private static renderOptionalTitle(doc: PDFKit.PDFDocument, title: string, style: SlideStyle): void {
         const fontSize = (style.font_size || 18) * 1.8;
         const fontFamily = style.font_family || 'Helvetica';
         const color = style.color || '#000000';
-        const align = style.content_align?.horizontal || 'left'; // Determine alignment once
+        const align = (style.content_align?.horizontal as string) || 'left'; // Determine alignment once
 
         doc.fillColor(color)
             .font(this.resolveBoldFont(fontFamily))
             .fontSize(fontSize)
             .text(title, 50, 30, {
                 width: 620,
-                align: align as any
+                align: align as 'left' | 'center' | 'right'
             });
     }
 
-    private static renderTable(doc: PDFKit.PDFDocument, rows: TableCell[][], slot: any, style: any): void {
+    private static renderTable(doc: PDFKit.PDFDocument, rows: TableCell[][], slot: LayoutSlot, style: SlideStyle): void {
         const cellPadding = 5;
         if (rows.length === 0 || !rows[0]) return;
         const colWidth = slot.width / rows[0].length;
@@ -405,7 +406,7 @@ class PdfPluginStatic {
         if (segments.length === 1) {
             const seg = segments[0];
             doc.font(seg.font);
-            doc.text(seg.text, x, y, { width: width, align: align as any });
+            doc.text(seg.text, x, y, { width: width, align: align as 'left' | 'center' | 'right' });
             return doc.heightOfString(seg.text, { width: width });
         }
 
@@ -453,7 +454,7 @@ class PdfPluginStatic {
             doc.font(seg.font);
 
             if (isFirstChunk) {
-                doc.text(seg.text, x, y, { width: width, align: align as any, continued: !isLast });
+                doc.text(seg.text, x, y, { width: width, align: align as 'left' | 'center' | 'right', continued: !isLast });
                 isFirstChunk = false;
             } else {
                 doc.text(seg.text, { continued: !isLast });

@@ -64,22 +64,22 @@ function parseSlidesV2(content: string): Slide[] {
         const fmRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
         const fmMatch = slideBlock.match(fmRegex);
 
-        let config: any = {};
+        let config: Record<string, unknown> = {};
         let rawContent = slideBlock;
 
         if (fmMatch) {
             const yamlStr = fmMatch[1] || '';
             rawContent = fmMatch[2] || '';
             try {
-                config = YAML.parse(yamlStr);
+                config = YAML.parse(yamlStr) as Record<string, unknown>;
             } catch (e) {
                 console.warn('Invalid YAML in slide:', e);
             }
         }
 
-        const layout_id = config.layout || 'blank';
-        const title = config.title;
-        const style = config.style || {};
+        const layout_id = (config.layout as string) || 'blank';
+        const title = config.title as string | undefined;
+        const style = (config.style as any) || {};
 
         const slots = parseSlots(rawContent);
 

@@ -13,17 +13,7 @@
     "composite": true,
     "outDir": "dist",
     "rootDir": ".",
-    "paths": {
-      "@stonedeck/core": [
-        "./packages/core/src/index.ts"
-      ],
-      "@stonedeck/html-plugin": [
-        "./packages/html-plugin/src/index.ts"
-      ],
-      "@stonedeck/pdf-plugin": [
-        "./packages/pdf-plugin/src/index.ts"
-      ]
-    }
+    "paths": {}
   },
   "files": [],
   "include": [],

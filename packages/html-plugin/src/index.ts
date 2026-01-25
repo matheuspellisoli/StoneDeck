@@ -1,7 +1,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { StoneDeckIR, SlotContent, TableCell, Slide, getLayout, ExportPlugin } from '@stonedeck/core';
+import { StoneDeckIR, SlotContent, TableCell, Slide, getLayout, ExportPlugin, LayoutSlot, SlideStyle, ListItem } from '@stonedeck/core';
 
 export interface HtmlPluginOptions {
     offline?: boolean;
@@ -31,7 +31,7 @@ class HtmlPluginStatic {
             const layout = getLayout(slide.layout_id, slide.slots.length);
             let yOffset = 0;
             if (slide.title) {
-                const hasTitleSlot = layout?.slots.some((s: any) => s.id === 'title');
+                const hasTitleSlot = layout?.slots.some((s: LayoutSlot) => s.id === 'title');
                 if (!hasTitleSlot) {
                     slideContent += this.renderOptionalTitle(slide.title, slide.style);
                     yOffset = 60;
@@ -60,7 +60,7 @@ class HtmlPluginStatic {
         });
 
         const slidesResponse = await Promise.all(slidePromises);
-        let slidesInnerHtml = slidesResponse.join('');
+        const slidesInnerHtml = slidesResponse.join('');
 
         const html = `
 <!DOCTYPE html>
@@ -348,7 +348,7 @@ class HtmlPluginStatic {
         fs.writeFileSync(outputPath, html);
     }
 
-    private static async getBackgroundCSS(bg: any, basePath: string, offline: boolean): Promise<string> {
+    private static async getBackgroundCSS(bg: SlideStyle['background'], basePath: string, offline: boolean): Promise<string> {
         if (!bg) return '#FFFFFF';
         if (bg.type === 'color') return bg.value || '#FFFFFF';
         if (bg.type === 'gradient' && bg.colors) {
@@ -362,7 +362,7 @@ class HtmlPluginStatic {
         return '#FFFFFF';
     }
 
-    private static renderOptionalTitle(title: string, style: any): string {
+    private static renderOptionalTitle(title: string, style: SlideStyle): string {
         const fontSize = (style.font_size || 18) * 1.8;
         const align = style.content_align?.horizontal || 'left';
         return `
@@ -372,10 +372,10 @@ class HtmlPluginStatic {
         `;
     }
 
-    private static async renderSlot(content: SlotContent, slot: any, style: any, ir: StoneDeckIR, yOffset: number, outputDir: string, offline: boolean): Promise<string> {
+    private static async renderSlot(content: SlotContent, slot: LayoutSlot, style: SlideStyle, ir: StoneDeckIR, yOffset: number, outputDir: string, offline: boolean): Promise<string> {
         let drawY = slot.y + yOffset;
-        let bottomLimit = 405 - 15;
-        let availableHeight = bottomLimit - drawY;
+        const bottomLimit = 405 - 15;
+        const availableHeight = bottomLimit - drawY;
         let safeHeight = Math.min(slot.height, availableHeight);
         let widthStr = `${slot.width}pt`;
 
@@ -389,7 +389,7 @@ class HtmlPluginStatic {
         let innerHtml = '';
         const hAlign = style.card?.content_align?.horizontal || style.content_align?.horizontal || 'left';
         const vAlign = style.card?.content_align?.vertical || style.content_align?.vertical || 'top';
-        const valignMap: any = { top: 'flex-start', middle: 'center', bottom: 'flex-end' };
+        const valignMap: Record<string, string> = { top: 'flex-start', middle: 'center', bottom: 'flex-end' };
         const justifyContent = valignMap[vAlign] || 'flex-start';
 
         let extraStyles = '';
@@ -409,7 +409,7 @@ class HtmlPluginStatic {
                 innerHtml = this.parseMarkdown(content.raw);
             }
         } else if (content.type === 'list') {
-            innerHtml = '<ul>' + content.items.map((i: any) => {
+            innerHtml = '<ul>' + content.items.map((i: ListItem) => {
                 const processedText = i.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                 return `<li>${processedText}</li>`;
             }).join('') + '</ul>';

@@ -2,7 +2,7 @@ import { parseManifesto } from './parser/manifesto.js';
 import { parseSlides } from './parser/tokenizer.js';
 import { ThemeLoader } from './resolver/theme-loader.js';
 import { validateLayout, getLayout } from './layouts/validator.js';
-import { StoneDeckIR, Slide, SlotContent, ListItem, TableCell } from './models/ir.js';
+import { StoneDeckIR, SlotContent, ListItem, TableCell } from './models/ir.js';
 import { metricsCalculator } from './resolver/metrics.js';
 import { mapMarkdownLists } from './parser/list-mapper.js';
 import { mapMarkdownTable } from './parser/table-mapper.js';

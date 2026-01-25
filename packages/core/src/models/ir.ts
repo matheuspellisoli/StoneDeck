@@ -19,6 +19,11 @@ export interface TableCell {
 }
 
 export interface SlideStyle {
+  font_size?: number;
+  font_family?: string;
+  color?: string;
+  image_fit?: 'cover' | 'contain';
+  full_bleed?: boolean;
   background?: {
     type: 'color' | 'image' | 'gradient';
     value?: string;
@@ -37,6 +42,7 @@ export interface SlideStyle {
     radius?: string;
     border?: string;
     shadow?: boolean;
+    image_fit?: 'cover' | 'contain';
     content_align?: {
       horizontal?: 'left' | 'center' | 'right';
       vertical?: 'top' | 'middle' | 'bottom';
@@ -48,7 +54,7 @@ export interface SlideStyle {
     spacing?: string;
     indent?: string;
   };
-  [key: string]: any;
+  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export type SlotContent = {
