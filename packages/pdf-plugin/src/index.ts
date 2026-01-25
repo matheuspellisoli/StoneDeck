@@ -1,7 +1,7 @@
 import PDFDocument from 'pdfkit';
 import * as fs from 'fs';
 import * as path from 'path';
-import { StoneDeckIR, SlotContent, ListItem, TableCell, getLayout, ExportPlugin } from '@StoneDeck/core';
+import { StoneDeckIR, SlotContent, ListItem, TableCell, getLayout, ExportPlugin } from '@stonedeck/core';
 
 export class PdfPlugin implements ExportPlugin {
     name = "PDF Plugin";

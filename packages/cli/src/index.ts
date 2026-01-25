@@ -1,6 +1,6 @@
-import { processStoneDeck } from '@StoneDeck/core';
-import { PdfPlugin } from '@StoneDeck/pdf-plugin';
-import { HtmlPlugin } from '@StoneDeck/html-plugin';
+import { processStoneDeck } from '@stonedeck/core';
+import { PdfPlugin } from '@stonedeck/pdf-plugin';
+import { HtmlPlugin } from '@stonedeck/html-plugin';
 import * as fs from 'fs';
 import * as path from 'path';
 

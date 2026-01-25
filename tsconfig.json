@@ -14,17 +14,19 @@
     "outDir": "dist",
     "rootDir": ".",
     "paths": {
-      "@StoneDeck/core": [
+      "@stonedeck/core": [
         "./packages/core/src/index.ts"
       ],
-      "@StoneDeck/html-plugin": [
+      "@stonedeck/html-plugin": [
         "./packages/html-plugin/src/index.ts"
       ],
-      "@StoneDeck/pdf-plugin": [
+      "@stonedeck/pdf-plugin": [
         "./packages/pdf-plugin/src/index.ts"
       ]
     }
   },
+  "files": [],
+  "include": [],
   "references": [
     {
       "path": "./packages/core"

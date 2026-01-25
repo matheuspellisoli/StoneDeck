@@ -1,7 +1,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { StoneDeckIR, SlotContent, TableCell, Slide, getLayout, ExportPlugin } from '@StoneDeck/core';
+import { StoneDeckIR, SlotContent, TableCell, Slide, getLayout, ExportPlugin } from '@stonedeck/core';
 
 export interface HtmlPluginOptions {
     offline?: boolean;

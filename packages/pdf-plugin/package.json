@@ -1,5 +1,5 @@
 {
-    "name": "@StoneDeck/pdf-plugin",
+    "name": "@stonedeck/pdf-plugin",
     "version": "0.7.0",
     "type": "module",
     "main": "dist/index.js",
@@ -8,7 +8,7 @@
         "build": "tsc -b"
     },
     "dependencies": {
-        "@StoneDeck/core": "^1.0.0",
+        "@stonedeck/core": "^0.7.0",
         "pdfkit": "^0.14.0"
     },
     "devDependencies": {

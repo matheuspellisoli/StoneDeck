@@ -1,5 +1,5 @@
 {
-  "name": "stonedeck-monorepo",
+  "name": "stonedeck",
   "private": true,
   "type": "module",
   "workspaces": [

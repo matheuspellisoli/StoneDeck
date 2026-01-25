@@ -1,5 +1,5 @@
 {
-    "name": "@StoneDeck/cli",
+    "name": "@stonedeck/cli",
     "version": "0.7.0",
     "type": "module",
     "bin": {
@@ -12,9 +12,9 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
-        "@StoneDeck/core": "^1.0.0",
-        "@StoneDeck/html-plugin": "^1.0.0",
-        "@StoneDeck/pdf-plugin": "^1.0.0"
+        "@stonedeck/core": "^0.7.0",
+        "@stonedeck/html-plugin": "^0.7.0",
+        "@stonedeck/pdf-plugin": "^0.7.0"
     },
     "devDependencies": {
         "typescript": "^5.0.0",
