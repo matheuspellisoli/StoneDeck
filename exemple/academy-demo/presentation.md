@@ -17,6 +17,7 @@ layout_style: kind_1
 :::slide
 ---
 layout: title-and-content
+layout_style: kind_2
 ---
 # 1. Visão Geral
 *-*
@@ -32,6 +33,7 @@ layout: title-and-content
 :::slide
 ---
 layout: title-and-content
+layout_style: kind_3
 ---
 # 2. Layout em Colunas
 *-*
@@ -67,6 +69,7 @@ style:
 :::slide
 ---
 layout: content 
+layout_style: kind_1
 style:
   content_align:
     horizontal: center

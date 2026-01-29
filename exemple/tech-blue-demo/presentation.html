@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Blue Demo</title>
+    <style>
+        :root {
+            --canvas-width: 720pt;
+            --canvas-height: 405pt;
+            --accent-color: #3b82f6;
+            --scale-factor: 1;
+        }
+
+        html, body { height: 100%; }
+
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #1a1a1a; 
+            min-height: 100vh;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s;
+            overflow-x: hidden;
+        }
+        
+        /* Presentation Mode */
+        body.presenting {
+            background-color: black;
+            overflow: hidden;
+        }
+
+        #presentation-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+        
+        body.presenting #presentation-container {
+            padding: 0;
+        }
+
+        .slides-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            width: 100%;
+        }
+
+        body.presenting .slides-inner {
+            gap: 0;
+            width: auto;
+            height: 100%;
+            justify-content: center;
+        }
+        
+        .slide-wrapper {
+            position: relative;
+            width: var(--canvas-width);
+            height: var(--canvas-height);
+            transform-origin: top left;
+            transform: scale(var(--scale-factor));
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background-color: white;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        body.presenting .slide-wrapper {
+            box-shadow: none;
+            display: none; /* Hide inactive */
+            /* Do NOT override transform or width/height. Keep them logical 720x405 and let scale work. */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            transform: translate(-50%, -50%) scale(var(--scale-factor));
+        }
+
+        body.presenting .slide-wrapper.active {
+            display: block;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            background-color: white; 
+            overflow: hidden;
+        }
+        
+        /* Slots */
+        .slot { 
+            position: absolute; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+        .slot-title { font-weight: bold; }
+        
+        h1 { font-size: 1.6em; margin-bottom: 0.1em; margin-top: 0; line-height: 1.1; }
+        h2 { font-size: 1.3em; margin-bottom: 0.15em; margin-top: 0; line-height: 1.2; }
+        h3 { font-size: 1.1em; margin-bottom: 0.1em; margin-top: 0; line-height: 1.2; }
+        
+        ul { padding-left: 1.1em; margin: 0; list-style-type: disc; }
+        li { margin-bottom: 0.15em; line-height: 1.25; }
+        li::marker { color: var(--accent-color); }
+        
+        table { border-collapse: collapse; width: 100%; margin-top: 0.4em; }
+        td, th { border: 1pt solid #ccc; padding: 3pt 5pt; text-align: left; }
+        th { background: rgba(0,0,0,0.05); font-weight: bold; }
+        
+        img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; margin: auto; flex-shrink: 0; }
+        
+        .markdown-line { margin-bottom: 2pt; line-height: 1.35; }
+        p { margin: 0 0 3pt 0; }
+
+        /* Navigation */
+        #nav-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        body.presenting #nav-bar {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.presenting #nav-bar:hover {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover { background: var(--accent-color); border-color: var(--accent-color); }
+        
+        #slide-index { min-width: 60px; text-align: center; }
+
+        @media print {
+            @page {
+                size: 720pt 405pt;
+                margin: 0;
+            }
+            body { 
+                background: white; 
+                display: block; 
+                overflow: visible;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            #nav-bar { 
+                display: none !important; 
+            }
+            #presentation-container {
+                padding: 0 !important;
+                display: block !important;
+            }
+            .slides-inner {
+                display: block !important;
+                gap: 0 !important;
+            }
+            .slide-wrapper { 
+                display: block !important;
+                margin: 0 !important; 
+                padding: 0 !important;
+                box-shadow: none !important; 
+                page-break-after: always !important; 
+                break-after: page !important;
+                transform: none !important; 
+                width: 720pt !important; 
+                height: 405pt !important;
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                overflow: hidden !important;
+            }
+            .slide {
+                position: absolute !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body id="body">
+    <div id="presentation-container">
+        <div class="slides-inner">
+            
+                <div class="slide-wrapper active" id="wrapper-0">
+                    <div class="slide" id="slide-0" style="background: linear-gradient(to bottom, #00c6ff, #0072ff); color: #ffffff; font-family: Montserrat;">
+                        
+            <div class="slot" style="left: 50pt; top: 120pt; width: 620pt; height: 100pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h1>Tech Blue</h1><h2>The New Standard for Technical Presentations</h2>
+            </div>
+        
+            <div class="slot" style="left: 50pt; top: 230pt; width: 620pt; height: 125pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <div class="markdown-line">Designed for Clarity & Impact</div>
+            </div>
+        
+                    </div>
+                </div>
+            
+                <div class="slide-wrapper " id="wrapper-1">
+                    <div class="slide" id="slide-1" style="background: #0d47a1; color: #e3f2fd; font-family: #0d47a1;">
+                        
+            <div class="slot" style="left: 50pt; top: 30pt; width: 620pt; height: 60pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h1>Default Variant (Surface)</h1>
+            </div>
+        
+            <div class="slot" style="left: 50pt; top: 100pt; width: 620pt; height: 280pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h2>Crisp & Clean</h2><div class="markdown-line">The default layout uses a pure white surface with professional blue-grey text and deep blue headings.</div><div class="markdown-line">&nbsp;</div><div style="display: list-item; margin-left: 20pt; list-style-type: disc;"><strong>Legibility</strong>: High contrast for reading.</div><div style="display: list-item; margin-left: 20pt; list-style-type: disc;"><strong>Fonts</strong>: Roboto (Body) & Inter (Headings).</div><div style="display: list-item; margin-left: 20pt; list-style-type: disc;"><strong>Use Case</strong>: Documentation & Standard Slides.</div>
+            </div>
+        
+                    </div>
+                </div>
+            
+                <div class="slide-wrapper " id="wrapper-2">
+                    <div class="slide" id="slide-2" style="background: #e3f2fd; color: #0d47a1; font-family: Montserrat;">
+                        
+            <div class="slot" style="left: 50pt; top: 30pt; width: 620pt; height: 60pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h1>Kind 1: Light Blue</h1>
+            </div>
+        
+            <div class="slot" style="left: 50pt; top: 100pt; width: 620pt; height: 280pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h2>Modern Backdrop</h2><div class="markdown-line">This variant switches to a soft light blue background (`#e3f2fd`) and uses the <strong>Montserrat</strong> display font.</div><div class="markdown-line">&nbsp;</div><blockquote style="border-left: 3px solid #ccc; margin: 0; padding-left: 10px; font-style: italic; color: #555;">"Perfect for separating sections or highlighting key concepts without being overwhelming."</blockquote>
+            </div>
+        
+                    </div>
+                </div>
+            
+                <div class="slide-wrapper " id="wrapper-3">
+                    <div class="slide" id="slide-3" style="background: #0d47a1; color: #e3f2fd; font-family: #0d47a1;">
+                        
+            <div class="slot" style="left: 50pt; top: 180pt; width: 620pt; height: 60pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h1>Deep Blue Mode (Kind 2)</h1><h3>High Contrast Dark Theme</h3>
+            </div>
+        
+                    </div>
+                </div>
+            
+                <div class="slide-wrapper " id="wrapper-4">
+                    <div class="slide" id="slide-4" style="background: #0d47a1; color: #e3f2fd; font-family: #0d47a1;">
+                        
+            <div class="slot" style="left: 50pt; top: 50pt; width: 300pt; height: 140pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; background-color: rgba(255,255,255,0.1); color: #e3f2fd; border: 1px solid rgba(255,255,255,0.2); padding: 10pt; ">
+                <h1>Architecture Overview</h1><div class="markdown-line">This slide uses <strong>Kind 2</strong> (Deep Blue) with glassmorphism cards.</div>
+            </div>
+        
+            <div class="slot" style="left: 370pt; top: 50pt; width: 300pt; height: 140pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; background-color: rgba(255,255,255,0.1); color: #e3f2fd; border: 1px solid rgba(255,255,255,0.2); padding: 10pt; ">
+                <h1>API Gateway</h1><div class="markdown-line">Rest & GraphQL</div>
+            </div>
+        
+            <div class="slot" style="left: 50pt; top: 210pt; width: 300pt; height: 140pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; background-color: rgba(255,255,255,0.1); color: #e3f2fd; border: 1px solid rgba(255,255,255,0.2); padding: 10pt; ">
+                <h1>Microservices</h1><div class="markdown-line">Node.js & Go</div>
+            </div>
+        
+            <div class="slot" style="left: 370pt; top: 210pt; width: 300pt; height: 140pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; background-color: rgba(255,255,255,0.1); color: #e3f2fd; border: 1px solid rgba(255,255,255,0.2); padding: 10pt; ">
+                <h1>Database</h1><div class="markdown-line">PostgreSQL</div>
+            </div>
+        
+                    </div>
+                </div>
+            
+                <div class="slide-wrapper " id="wrapper-5">
+                    <div class="slide" id="slide-5" style="background: linear-gradient(to bottom, #00c6ff, #0072ff); color: #ffffff; font-family: Montserrat;">
+                        
+            <div class="slot" style="left: 50pt; top: 30pt; width: 620pt; height: 60pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h1>Gradient Impact (Kind 3)</h1>
+            </div>
+        
+            <div class="slot" style="left: 50pt; top: 100pt; width: 620pt; height: 280pt; font-size: 20pt; line-height: normal; text-align: left; justify-content: flex-start; ">
+                <h2>Vibrant Energy</h2><div class="markdown-line">Uses a dynamic Cyan-to-Blue gradient.</div><div class="markdown-line">&nbsp;</div><div class="markdown-line">1.  <strong>Launch Products</strong>: High energy.</div><div class="markdown-line">2.  <strong>Highlight Wins</strong>: Celebration mode.</div><div class="markdown-line">3.  <strong>Visual Break</strong>: Keeps audience engaged.</div>
+            </div>
+        
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+
+    <div id="nav-bar">
+        <button onclick="togglePresent()">Present</button>
+        <button onclick="prevSlide()">Prev</button>
+        <span id="slide-index">1 / 6</span>
+        <button onclick="nextSlide()">Next</button>
+        <button onclick="toggleFS()">FS</button>
+    </div>
+
+    <script>
+        const totalSlides = 6;
+        const body = document.getElementById('body');
+        const wrappers = document.querySelectorAll('.slide-wrapper');
+        const indexSpan = document.getElementById('slide-index');
+        let currentIdx = 0;
+
+        function resize() {
+            const baseWidth = 960; 
+            const baseHeight = 540;
+            const isPresenting = body.classList.contains('presenting');
+            
+            const winW = window.innerWidth || document.documentElement.clientWidth || 1024;
+            const winH = window.innerHeight || document.documentElement.clientHeight || 768;
+            
+            const targetWidth = isPresenting ? winW : winW * 0.95;
+            const targetHeight = isPresenting ? winH : winH * 0.9;
+            
+            let scale = Math.min(targetWidth / baseWidth, targetHeight / baseHeight);
+            
+            if (!isPresenting) {
+                scale = Math.min(scale, 1);
+            }
+            if (scale <= 0.01) scale = 1;
+
+            document.documentElement.style.setProperty('--scale-factor', scale);
+            
+            wrappers.forEach(w => {
+                if (isPresenting) {
+                    w.style.height = ''; // Reset to CSS default (var(--canvas-height)) for proper aspect ratio scaling
+                } else {
+                    w.style.height = (baseHeight * scale) + 'px';
+                }
+            });
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('DOMContentLoaded', resize);
+        window.addEventListener('load', resize);
+        resize();
+
+        function updateUI() {
+            indexSpan.innerText = (currentIdx + 1) + ' / ' + totalSlides;
+            wrappers.forEach((w, i) => {
+                w.classList.toggle('active', i === currentIdx);
+            });
+            
+            if (!body.classList.contains('presenting')) {
+                wrappers[currentIdx].scrollIntoView({ behavior: 'auto', block: 'center' });
+            }
+        }
+
+        function nextSlide() {
+            if (currentIdx < totalSlides - 1) {
+                currentIdx++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                updateUI();
+            }
+        }
+
+        function togglePresent() {
+            body.classList.toggle('presenting');
+            setTimeout(() => { resize(); updateUI(); }, 50);
+        }
+
+        function toggleFS() {
+            if (!document.fullscreenElement) {
+                body.requestFullscreen().catch(e => console.warn(e));
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (['ArrowRight', ' ', 'PageDown', 'Enter'].includes(e.key)) { e.preventDefault(); nextSlide(); }
+            if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prevSlide(); }
+            if (e.key === 'p') togglePresent();
+            if (e.key === 'f') toggleFS();
+            if (e.key === 'Escape' && body.classList.contains('presenting')) togglePresent();
+        });
+    </script>
+    
+</body>
+</html>

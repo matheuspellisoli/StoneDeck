@@ -498,24 +498,118 @@ class HtmlPluginStatic {
 
     private static parseMarkdown(raw: string): string {
         const lines = raw.split(/\r?\n/);
-        return lines.map(line => {
-            const text = line.trim();
-            if (!text) return '<div class="markdown-line">&nbsp;</div>';
-            let processedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            processedText = processedText.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">');
+        let html = '';
+        let inTable = false;
+        let tableRows: string[][] = [];
+        let tableHeader: string[] | null = null;
+        let inCodeBlock = false;
+        let codeBlockContent = '';
+        let codeLanguage = '';
 
-            if (processedText.startsWith('### ')) return `<h3>${processedText.substring(4)}</h3>`;
-            if (processedText.startsWith('## ')) return `<h2>${processedText.substring(3)}</h2>`;
-            if (processedText.startsWith('# ')) return `<h1>${processedText.substring(2)}</h1>`;
-            if (processedText.startsWith('> ')) return `<blockquote style="border-left: 3px solid #ccc; margin: 0; padding-left: 10px; font-style: italic; color: #555;">${processedText.substring(2)}</blockquote>`;
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]!.trim();
 
-            const listMatch = processedText.match(/^(\s*)([-*+])\s+(.*)$/);
-            if (listMatch) {
-                const indent = (listMatch[1]!.length / 2 + 1) * 20;
-                return `<div style="display: list-item; margin-left: ${indent}pt; list-style-type: disc;">${listMatch[3]}</div>`;
+            if (inCodeBlock) {
+                if (line.startsWith('```')) {
+                    // End code block
+                    html += `<pre><code class="language-${codeLanguage}">${codeBlockContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
+                    inCodeBlock = false;
+                    codeBlockContent = '';
+                    codeLanguage = '';
+                } else {
+                    // Preserve indentation for code blocks?
+                    // The line is trimmed above. If we want to preserve indentation we should not trim `lines[i]`.
+                    // But for now let's stick to trimmed to match the rest of the logic, or maybe use raw line for code.
+                    const rawLine = lines[i]!; // Don't trim code lines
+                    codeBlockContent += rawLine + '\n';
+                }
+                continue;
             }
-            return `<div class="markdown-line">${processedText}</div>`;
-        }).join('');
+
+            if (line.startsWith('```')) {
+                inCodeBlock = true;
+                codeLanguage = line.replace('```', '').trim();
+                continue;
+            }
+
+            // Table Detection
+            if (line.startsWith('|')) {
+                // Check if this is a header row (look ahead for separator)
+                if (!inTable && i + 1 < lines.length && lines[i + 1]!.trim().startsWith('|') && lines[i + 1]!.includes('---')) {
+                    inTable = true;
+                    tableHeader = line.split('|').filter(c => c.trim().length > 0 || c === '').map(c => c.trim());
+                    // Skip the separator line
+                    i++;
+                    continue;
+                } else if (inTable) {
+                    const row = line.split('|').filter(c => c.trim().length > 0 || c === '').map(c => c.trim());
+                    tableRows.push(row);
+                    continue;
+                }
+            } else if (inTable) {
+                // Table ended
+                html += HtmlPluginStatic.renderTable(tableHeader!, tableRows);
+                inTable = false;
+                tableHeader = null;
+                tableRows = [];
+            }
+
+            if (!line) {
+                html += '<div class="markdown-line">&nbsp;</div>';
+                continue;
+            }
+
+            let processedText = HtmlPluginStatic.formatInlineMarkdown(line.trim());
+
+            if (processedText.startsWith('### ')) {
+                html += `<h3>${processedText.substring(4)}</h3>`;
+            } else if (processedText.startsWith('## ')) {
+                html += `<h2>${processedText.substring(3)}</h2>`;
+            } else if (processedText.startsWith('# ')) {
+                html += `<h1>${processedText.substring(2)}</h1>`;
+            } else if (processedText.startsWith('> ')) {
+                html += `<blockquote style="border-left: 3px solid #ccc; margin: 0; padding-left: 10px; font-style: italic; color: #555;">${processedText.substring(2)}</blockquote>`;
+            } else {
+                const listMatch = processedText.match(/^(\s*)([-*+])\s+(.*)$/);
+                if (listMatch) {
+                    const indent = (listMatch[1]!.length / 2 + 1) * 20;
+                    html += `<div style="display: list-item; margin-left: ${indent}pt; list-style-type: disc;">${listMatch[3]}</div>`;
+                } else {
+                    html += `<div class="markdown-line">${processedText}</div>`;
+                }
+            }
+        }
+
+        // Flush remaining table if file ends with table
+        if (inTable) {
+            html += HtmlPluginStatic.renderTable(tableHeader!, tableRows);
+        }
+
+        return html;
+    }
+
+    private static renderTable(headers: string[], rows: string[][]): string {
+        let h = '<table><thead><tr>';
+        headers.forEach(head => h += `<th>${HtmlPluginStatic.formatInlineMarkdown(head)}</th>`);
+        h += '</tr></thead><tbody>';
+        rows.forEach(row => {
+            h += '<tr>';
+            row.forEach(cell => h += `<td>${HtmlPluginStatic.formatInlineMarkdown(cell)}</td>`);
+            h += '</tr>';
+        });
+        h += '</tbody></table>';
+        return h;
+    }
+
+    private static formatInlineMarkdown(text: string): string {
+        let processed = text;
+        // Bold
+        processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Italics
+        processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        // Images
+        processed = processed.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">');
+        return processed;
     }
 
     // Helper to resolve image to Base64
