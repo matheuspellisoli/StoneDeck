@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { processStoneDeck } from '@stonedeck/core';
-import { PdfPlugin } from '@stonedeck/pdf-plugin';
 import { HtmlPlugin } from '@stonedeck/html-plugin';
 import * as fs from 'fs';
 import * as path from 'path';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
 
 async function main() {
     const args = process.argv.slice(2);
@@ -27,28 +30,26 @@ async function main() {
 
 function printUsage() {
     console.log(`
-StoneDeck CLI v1.0.0
+StoneDeck CLI v${pkg.version}
 
 Usage:
-  stonedeck export <input.md> <format> [options]
+  stonedeck export <input.md> [options]
   stonedeck preview <input.md> [options]
-  stonedeck <input.md> [output.pdf/html] (Legacy)
+  stonedeck <input.md> [output.html] (Legacy)
 
 Commands:
-  export <input.md> <format>   Export a presentation to PDF or HTML
-  preview <input.md>           Quick HTML preview (defaults to internal browser or static)
+  export <input.md>      Export a presentation to HTML
+  preview <input.md>     Quick HTML preview (defaults to internal browser or static)
 
 Options:
-  --output, -o <path>          Output file path
-  --theme, -t <path>           Theme file override
-  --watch, -w                  Watch for changes and re-generate
-  --no-offline                 Disable automatic Base64 conversion for HTML
-  --debug                      Save IR to .ir.json for debugging
-  --help, -h                   Show this help message
+  --output, -o <path>    Output file path
+  --theme, -t <path>     Theme file override
+  --watch, -w            Watch for changes and re-generate
+  --no-offline           Disable automatic Base64 conversion for HTML
+  --debug                Save IR to .ir.json for debugging
+  --help, -h             Show this help message
 
-Formats:
-  pdf                          Generate a PDF presentation
-  html                         Generate an offline-capable HTML presentation
+Note: To get a PDF, export to HTML and use your browser's "Print to PDF" feature.
 `);
 }
 
@@ -66,19 +67,19 @@ async function handleExport(args: string[], legacy = false) {
     if (legacy) {
         inputPath = path.resolve(args[0]!);
         outputPath = args[1] && !args[1].startsWith('--') ? path.resolve(args[1]) : undefined;
-        format = outputPath?.toLowerCase().endsWith('.html') ? 'html' : 'pdf';
     } else {
         inputPath = path.resolve(args[0]!);
-        format = args[1]?.toLowerCase();
 
-        if (!format || !['pdf', 'html'].includes(format)) {
-            console.error('Error: Format must be either "pdf" or "html"');
-            process.exit(1);
+        // If second argument is 'html' or 'pdf', ignore it (for backward compatibility)
+        if (args[1] === 'html' || args[1] === 'pdf') {
+            args.splice(1, 1);
         }
 
         const outIdx = args.indexOf('--output') !== -1 ? args.indexOf('--output') : args.indexOf('-o');
         if (outIdx !== -1) outputPath = path.resolve(args[outIdx + 1]!);
     }
+
+    format = 'html';
 
     // Default output path if not specified
     if (!outputPath) {
@@ -112,17 +113,10 @@ async function handleExport(args: string[], legacy = false) {
         }
 
         const htmlPlugin = new HtmlPlugin();
-        const pdfPlugin = new PdfPlugin();
-
         const offline = !args.includes('--no-offline');
 
-        if (format === 'html') {
-            console.log(`🌐 Generating HTML: ${path.basename(outputPath)}...`);
-            await htmlPlugin.generate(ir, outputPath, { offline });
-        } else {
-            console.log(`🎨 Generating PDF: ${path.basename(outputPath)}...`);
-            await pdfPlugin.generate(ir, outputPath);
-        }
+        console.log(`🌐 Generating HTML: ${path.basename(outputPath)}...`);
+        await htmlPlugin.generate(ir, outputPath, { offline });
 
         console.log('✅ Done!');
     } catch (e: unknown) {
@@ -148,7 +142,7 @@ async function handlePreview(args: string[]) {
         try {
             console.log(`\n🔄 ${isWatch ? 'Updating' : 'Generating'} preview...`);
             // Preview defaults to no-offline for speed
-            const exportArgs = [args[0]!, 'html', '--output', outputPath, ...args.filter(a => a !== args[0] && a !== '--watch' && a !== '-w')];
+            const exportArgs = [args[0]!, '--output', outputPath, ...args.filter(a => a !== args[0] && a !== '--watch' && a !== '-w')];
             if (!exportArgs.includes('--no-offline')) exportArgs.push('--no-offline');
 
             await handleExport(exportArgs, false);

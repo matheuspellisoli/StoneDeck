@@ -2,12 +2,12 @@
 
 > Markdown to Magic. An agentic presentation engine.
 
-**StoneDeck** transforms simple Markdown into stunning **PDF** and **HTML** slides. It enforces a layout system that guarantees professional consistency without pixel-pushing.
+**StoneDeck** transforms simple Markdown into stunning **HTML** slides. It enforces a layout system that guarantees professional consistency without pixel-pushing. To get a PDF, simply export to HTML and print via your browser.
 
 ## ✨ Key Features
 
 - **Markdown First**: focus on content, not design coordinates.
-- **Dual Export**: Print-ready PDFs and interactive HTML slides (offline capable).
+- **HTML Export**: Interactive HTML slides (offline capable) that look perfect when printed to PDF.
 - **Smart Layouts**: Unified card grids, big numbers, and split columns that just work.
 - **Agentic Design**: Automatic adjustments for font sizes and grids based on content density.
 
@@ -41,8 +41,9 @@
 
 4.  **Export**:
     ```bash
-    stonedeck export slides.md pdf
+    stonedeck export slides.md
     ```
+    *(Open the generated HTML and use "Print to PDF" for high-quality static slides)*
 
 ## 📚 Documentation
 
@@ -63,7 +64,6 @@ This repository is a monorepo managed with npm workspaces:
 - `packages/core`: Core logic and IR models.
 - `packages/cli`: Command Line Interface.
 - `packages/html-plugin`: HTML export generator.
-- `packages/pdf-plugin`: PDF export generator.
 
 ## 📄 License
 

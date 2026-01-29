@@ -26,9 +26,6 @@
     },
     {
       "path": "./packages/html-plugin"
-    },
-    {
-      "path": "./packages/pdf-plugin"
     }
   ],
   "exclude": [

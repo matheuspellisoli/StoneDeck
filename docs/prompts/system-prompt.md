@@ -103,4 +103,4 @@ Gere agora a apresentação baseada no seguinte tópico: [INSERIR TÓPICO AQUI]
 1. Copie o texto acima.
 2. Cole na sua ferramenta de IA favorita.
 3. Substitua o final pelo tópico da sua apresentação.
-4. O StoneDeck cuidará de transformar o Markdown gerado em um PDF ou HTML profissional.
+4. O StoneDeck cuidará de transformar o Markdown gerado em um HTML profissional (que você pode imprimir para PDF).

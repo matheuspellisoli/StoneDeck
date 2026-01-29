@@ -11,9 +11,6 @@
         },
         {
             "path": "../html-plugin"
-        },
-        {
-            "path": "../pdf-plugin"
         }
     ],
     "include": [

@@ -1,11 +1,11 @@
 # Bienvenido a StoneDeck
 
-**StoneDeck** es un motor de presentaciones "agentic" diseñado para transformar Markdown simple en diapositivas **PDF** y **HTML** impresionantes y profesCierra la brecha entre el texto sin formato y las presentaciones de alto diseño, imponiendo un sistema de diseño estricto que garantiza la coherencia.
+**StoneDeck** es un motor de presentaciones "agentic" diseñado para transformar Markdown simple en diapositivas **HTML** impresionantes y profesionales. Cierra la brecha entre el texto sin formato y las presentaciones de alto diseño, imponiendo un sistema de diseño estricto que garantiza la coherencia.
 
 ## Características Principales
 
 - **Markdown Primero**: Escribe contenido, no coordenadas de píxeles.
-- **Exportación Dual**: Genera PDFs listos para imprimir y diapositivas HTML interactivas simultáneamente.
+- **Exportación HTML**: Genera diapositivas HTML interactivas que se pueden imprimir fácilmente a PDF.
 - **Diseños Inteligentes**: Cuadrículas de tarjetas unificadas, métricas de números grandes y columnas divididas funcionan de inmediato.
 - **Diseño Agente**: Parámetros como "Big Number" o "Cards" ajustan automáticamente tamaños de fuente y cuadrículas para el máximo impacto.
 
