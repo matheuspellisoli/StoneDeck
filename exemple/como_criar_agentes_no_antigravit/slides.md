@@ -188,7 +188,7 @@ style:
     colors: ["#3b82f6", "#1d4ed8"]
   color: white
 ---
-# 🚀
+# 🚀 
 Comece agora. Crie sua primeira Skill em `.agent/skills/`.
 
 :::

@@ -5,6 +5,7 @@ import { StoneDeckIR, SlotContent, TableCell, Slide, getLayout, ExportPlugin, La
 
 export interface HtmlPluginOptions {
     offline?: boolean;
+    liveReloadPort?: number;
 }
 
 export class HtmlPlugin implements ExportPlugin {
@@ -383,6 +384,22 @@ class HtmlPluginStatic {
             if (e.key === 'Escape' && body.classList.contains('presenting')) togglePresent();
         });
     </script>
+    ${options?.liveReloadPort ? `
+    <script>
+        const observerPort = ${options.liveReloadPort};
+        console.log("📡 Live Reload enabled on port " + observerPort);
+        const eventSource = new EventSource("http://localhost:" + observerPort + "/live-reload");
+        eventSource.onmessage = (event) => {
+            if (event.data === "reload") {
+                console.log("🔄 Reloading presentation...");
+                window.location.reload();
+            }
+        };
+        eventSource.onerror = () => {
+            console.warn("⚠️ Live Reload connection lost. Trying to reconnect...");
+        };
+    </script>
+    ` : ''}
 </body>
 </html>
 `;

@@ -3,6 +3,7 @@ import { processStoneDeck } from '@stonedeck/core';
 import { HtmlPlugin } from '@stonedeck/html-plugin';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as http from 'http';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -115,8 +116,11 @@ async function handleExport(args: string[], legacy = false) {
         const htmlPlugin = new HtmlPlugin();
         const offline = !args.includes('--no-offline');
 
+        const portIdx = args.indexOf('--live-reload-port');
+        const liveReloadPort = portIdx !== -1 ? parseInt(args[portIdx + 1]!) : undefined;
+
         console.log(`🌐 Generating HTML: ${path.basename(outputPath)}...`);
-        await htmlPlugin.generate(ir, outputPath, { offline });
+        await htmlPlugin.generate(ir, outputPath, { offline, liveReloadPort });
 
         console.log('✅ Done!');
     } catch (e: unknown) {
@@ -138,15 +142,78 @@ async function handlePreview(args: string[]) {
     // Default preview is always HTML
     const outputPath = inputPath.replace(/\.md$/, '.preview.html');
 
+    // Live Reload Server State
+    let sseClients: http.ServerResponse[] = [];
+    let lrPort = 3000;
+
+    const startLiveReloadServer = async () => {
+        return new Promise<number>((resolve) => {
+            const server = http.createServer((req, res) => {
+                const url = new URL(req.url || '/', `http://localhost:${lrPort}`);
+                if (url.pathname === '/live-reload') {
+                    res.writeHead(200, {
+                        'Content-Type': 'text/event-stream',
+                        'Cache-Control': 'no-cache',
+                        'Connection': 'keep-alive',
+                        'Access-Control-Allow-Origin': '*'
+                    });
+                    res.write('data: connected\n\n');
+                    sseClients.push(res);
+                    req.on('close', () => {
+                        sseClients = sseClients.filter(c => c !== res);
+                    });
+                } else if (url.pathname === '/' || url.pathname === '/index.html') {
+                    if (fs.existsSync(outputPath)) {
+                        res.writeHead(200, { 'Content-Type': 'text/html' });
+                        res.end(fs.readFileSync(outputPath));
+                    } else {
+                        res.writeHead(404);
+                        res.end('Preview not generated yet. Please wait...');
+                    }
+                } else {
+                    res.writeHead(404);
+                    res.end();
+                }
+            });
+
+            server.on('error', (e: any) => {
+                if (e.code === 'EADDRINUSE') {
+                    lrPort++;
+                    server.listen(lrPort);
+                }
+            });
+
+            server.listen(lrPort, () => {
+                resolve(lrPort);
+            });
+        });
+    };
+
+    if (isWatch) {
+        lrPort = await startLiveReloadServer();
+        console.log(`📡 Live Reload server started on port ${lrPort}`);
+    }
+
     const run = async () => {
         try {
             console.log(`\n🔄 ${isWatch ? 'Updating' : 'Generating'} preview...`);
             // Preview defaults to no-offline for speed
             const exportArgs = [args[0]!, '--output', outputPath, ...args.filter(a => a !== args[0] && a !== '--watch' && a !== '-w')];
             if (!exportArgs.includes('--no-offline')) exportArgs.push('--no-offline');
+            if (isWatch) {
+                exportArgs.push('--live-reload-port', lrPort.toString());
+            }
 
             await handleExport(exportArgs, false);
-            console.log(`👀 Preview available at: ${outputPath}`);
+
+            // Notify clients
+            sseClients.forEach(client => client.write('data: reload\n\n'));
+
+            if (isWatch) {
+                console.log(`👀 Preview available at: http://localhost:${lrPort}`);
+            } else {
+                console.log(`👀 Preview available at: file://${outputPath}`);
+            }
         } catch (e: unknown) {
             const message = e instanceof Error ? e.message : String(e);
             console.error(`❌ Preview update failed: ${message}`);
