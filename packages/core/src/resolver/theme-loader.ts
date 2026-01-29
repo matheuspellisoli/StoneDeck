@@ -52,9 +52,54 @@ export class ThemeLoader {
         return this.presets.standard;
     }
 
-    static resolveStyle(slideStyle: SlideStyle, theme: any): SlideStyle {
+    static resolveStyle(slideStyle: SlideStyle, theme: any, variantName?: string, seed: number = 0): SlideStyle {
         const tokens = theme.tokens || {};
-        return this.deepResolve(slideStyle, tokens);
+        const defaults = theme.defaults || {};
+
+        let variantStyle = {};
+
+        // 1. Explicit Variant
+        if (variantName && theme.variants?.[variantName]) {
+            variantStyle = theme.variants[variantName];
+        }
+        // 2. Dynamic Variant (if available and no explicit variant request or explicit variant not found)
+        else if (theme.variants && Object.keys(theme.variants).length > 0) {
+            const variantKeys = Object.keys(theme.variants);
+            // Use seed to pick a variant deterministically
+            const pickedKey = variantKeys[seed % variantKeys.length];
+            variantStyle = theme.variants[pickedKey];
+        }
+
+        // Merge: Defaults -> Variant -> Slide Style
+        // We need to merge carefully. 
+        // Actually, we should resolve each layer against tokens first? 
+        // Or merge raw values and then resolve?
+        // Let's merge raw values first to allow overrides.
+
+        // Deep merge: Defaults < Variant < SlideStyle
+        const mergedRaw = this.deepMerge(defaults, this.deepMerge(variantStyle, slideStyle));
+
+        return this.deepResolve(mergedRaw, tokens);
+    }
+
+    private static deepMerge(target: any, source: any): any {
+        if (!this.isObject(target) || !this.isObject(source)) {
+            return source;
+        }
+
+        const output = { ...target };
+        Object.keys(source).forEach(key => {
+            if (this.isObject(source[key])) {
+                if (!(key in target)) {
+                    Object.assign(output, { [key]: source[key] });
+                } else {
+                    output[key] = this.deepMerge(target[key], source[key]);
+                }
+            } else {
+                Object.assign(output, { [key]: source[key] });
+            }
+        });
+        return output;
     }
 
     private static deepResolve(obj: unknown, tokens: any): any {
@@ -118,5 +163,9 @@ export class ThemeLoader {
             case 'pt': return num;
             default: return num;
         }
+    }
+
+    private static isObject(item: any): boolean {
+        return (item && typeof item === 'object' && !Array.isArray(item));
     }
 }

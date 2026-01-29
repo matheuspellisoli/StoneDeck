@@ -45,16 +45,43 @@ export class MetricsCalculator {
      */
     estimateMarkdownHeight(markdown: string, style: SlideStyle, maxWidth: number): number {
         // Simple heuristic: split by lines and sum heights
-        // In a real implementation, this would handle actual markdown parsing.
         const lines = markdown.split('\n');
         let totalHeight = 0;
+        const baseFontSize = (style.font_size as number) || 18;
 
         for (const line of lines) {
             if (!line.trim()) {
-                totalHeight += ((style.font_size as number) || 18) * 0.5; // Half line height for empty lines
+                totalHeight += baseFontSize * 0.5; // Half line height for empty lines
                 continue;
             }
-            totalHeight += this.calculateTextHeight(line, style, maxWidth);
+
+            let fontSize = baseFontSize;
+            let text = line;
+            let lineHeightFactor = 1.2;
+
+            // Check for headers
+            if (line.startsWith('# ')) {
+                fontSize = baseFontSize * 1.6;
+                text = line.substring(2);
+                lineHeightFactor = 1.1;
+            } else if (line.startsWith('## ')) {
+                fontSize = baseFontSize * 1.3;
+                text = line.substring(3);
+                lineHeightFactor = 1.2;
+            } else if (line.startsWith('### ')) {
+                fontSize = baseFontSize * 1.1;
+                text = line.substring(4);
+            }
+
+            // Temporarily override font size in style for calculation
+            const tempStyle = { ...style, font_size: fontSize };
+
+            // Calculate height of wrapped text
+            // Note: heightOfString usually includes line height of the font
+            const h = this.calculateTextHeight(text, tempStyle, maxWidth);
+
+            // Apply line height factor if needed (basic adjustment)
+            totalHeight += h * 1.05; // Add a small buffer to match browser rendering
         }
 
         return totalHeight;

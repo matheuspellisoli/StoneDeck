@@ -2,13 +2,14 @@
 StoneDeck: true
 title: Apresentação Acadêmica
 subtitle: Exemplo de Tema
-theme: academico
+theme: academico_v2
 author: StoneDeck Demo
 ---
 
 :::slide
 ---
 layout: section-header
+layout_style: kind_1
 ---
 # Apresentação tema acadêmico
 :::
@@ -65,7 +66,7 @@ style:
 
 :::slide
 ---
-layout: content
+layout: content 
 style:
   content_align:
     horizontal: center

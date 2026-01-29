@@ -1,0 +1,56 @@
+name: "Tech Blue"
+tokens:
+  colors:
+    primary: "#0056b3" # Standard Tech Blue
+    secondary: "#e3f2fd" # Light Blue background
+    accent: "#00c6ff" # Cyan accent
+    surface: "#ffffff"
+    text: "#2c3e50" # Dark Blue-Grey text
+    heading: "#0d47a1" # Deep Blue heading
+    muted: "#90a4ae"
+    
+    # Variant Specifics
+    kind2_bg: "#0d47a1" # Deep Blue for dark mode
+    kind2_text: "#e3f2fd"
+    kind3_bg_start: "#00c6ff"
+    kind3_bg_end: "#0072ff"
+
+  fonts:
+    heading: "Inter"
+    body: "Roboto"
+    mono: "Fira Code"
+    display: "Montserrat"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "secondary"
+    color: "heading"
+    font_family: "display" # Modern Tech feel
+
+  kind_2:
+    background:
+      type: "color"
+      value: "kind2_bg"
+    color: "kind2_text"
+    font_family: "heading"
+
+  kind_3:
+    background:
+      type: "gradient"
+      colors: ["kind3_bg_start", "kind3_bg_end"]
+      direction: "135deg"
+    color: "surface"
+    font_family: "display"

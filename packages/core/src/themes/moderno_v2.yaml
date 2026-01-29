@@ -1,0 +1,56 @@
+name: "Moderno V2"
+tokens:
+  colors:
+    primary: "#2c3e50"
+    secondary: "#ecf0f1"
+    accent: "#3498db"
+    surface: "#f5f7fa"
+    text: "#34495e"
+    heading: "#2c3e50"
+    muted: "#7f8c8d"
+    quote_bg: "#e1f5fe"
+
+    # Variants
+    kind1_bg: "#FFFFFF"
+    kind2_bg_start: "#f5f7fa"
+    kind2_bg_end: "#c3cfe2"
+
+  fonts:
+    heading: "Helvetica-Bold"
+    body: "Helvetica"
+    mono: "Courier New"
+    futura: "Futura"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    color: "accent"
+    font_family: "futura"
+
+  kind_2:
+    background:
+      type: "gradient"
+      colors: ["kind2_bg_start", "kind2_bg_end"]
+      direction: "135deg"
+    color: "primary"
+    font_family: "body"
+
+  kind_3:
+    background:
+      type: "color"
+      value: "primary" # Dark modern
+    color: "secondary" # Light text
+    font_family: "heading"

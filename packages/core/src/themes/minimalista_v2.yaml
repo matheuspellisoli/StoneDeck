@@ -1,0 +1,56 @@
+name: "Minimalista V2"
+tokens:
+  colors:
+    primary: "#000000"
+    secondary: "#ffffff"
+    accent: "#000000"
+    surface: "#ffffff"
+    text: "#333333"
+    heading: "#000000"
+    muted: "#555555"
+    
+    # Variants
+    kind1_bg: "#F9F9F9" # Nearly white
+    kind2_bg: "#EFEFEF" # Light grey
+
+  fonts:
+    heading: "Helvetica-Bold"
+    body: "Helvetica"
+    mono: "Courier New"
+    thin: "Helvetica-Light"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 24
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    color: "primary"
+    font_family: "thin" # Ultra clean
+
+  kind_2:
+    background:
+      type: "color"
+      value: "kind2_bg"
+    color: "text"
+    font_align: "center" # Centered minimalism
+    content_align:
+      horizontal: "center"
+      vertical: "middle"
+
+  kind_3:
+    background:
+      type: "color"
+      value: "surface"
+    color: "accent"
+    font_family: "heading" # Bold statement

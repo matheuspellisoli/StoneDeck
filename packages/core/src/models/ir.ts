@@ -39,6 +39,7 @@ export interface SlideStyle {
   };
   card?: {
     background?: string;
+    color?: string;
     radius?: string;
     border?: string;
     shadow?: boolean;
@@ -74,6 +75,7 @@ export type SlotContent = {
 
 export interface Slide {
   layout_id: string;
+  variant?: string; // Optional variant (e.g. "kind_1") from frontmatter layout_style
   title?: string; // Optional slide title
   style: SlideStyle;
   slots: SlotContent[]; // Content of each slot (Structured)

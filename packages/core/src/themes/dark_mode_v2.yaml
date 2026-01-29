@@ -1,0 +1,54 @@
+name: "Dark Mode V2"
+tokens:
+  colors:
+    primary: "#64ffda"
+    secondary: "#112240"
+    accent: "#64ffda"
+    surface: "#0a192f"
+    text: "#e6f1ff"
+    heading: "#64ffda"
+    muted: "#8892b0"
+    code: "#ff9f43"
+
+    # Variant
+    kind1_bg: "#020c1b" # Even darker
+    kind2_bg: "#172a45" # Lighter Navy
+
+  fonts:
+    heading: "Helvetica-Bold"
+    body: "Helvetica"
+    mono: "Courier New"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    color: "muted"
+    font_family: "mono" # Hacker style
+
+  kind_2:
+    background:
+      type: "color"
+      value: "kind2_bg"
+    color: "heading"
+    font_family: "heading"
+
+  kind_3:
+    background:
+      type: "gradient"
+      colors: ["surface", "secondary"]
+      direction: "to bottom"
+    color: "text"
+    font_family: "body"

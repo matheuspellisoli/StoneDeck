@@ -1,0 +1,55 @@
+name: "Academico V2"
+tokens:
+  colors:
+    primary: "#1a237e"
+    secondary: "#f3e5f5"
+    accent: "#b71c1c"
+    surface: "#fdfbf7"
+    text: "#212121"
+    heading: "#1a237e"
+    table_header: "#e8eaf6"
+    
+    # Variant Specifics
+    kind1_bg: "#FFF8E1" # Warm paper-like
+    kind2_bg: "#ECEFF1" # Cool grey
+    kind2_color: "#263238" 
+
+  fonts:
+    heading: "Times-Bold"
+    body: "Times-Roman"
+    mono: "Courier"
+    sans: "Helvetica"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    color: "text"
+    font_family: "heading" # More formal headers for body too? logic check.
+  
+  kind_2:
+    background:
+      type: "color"
+      value: "kind2_bg"
+    color: "kind2_color"
+    font_family: "sans" # Modern academic look
+
+  kind_3:
+    background:
+      type: "gradient"
+      colors: ["primary", "accent"]
+      direction: "45deg"
+    color: "surface" # Inverted for dark background
+    font_family: "heading"

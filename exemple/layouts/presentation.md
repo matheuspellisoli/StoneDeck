@@ -8,6 +8,7 @@ theme: "./theme.yaml"
 :::slide
 ---
 layout: title
+layout_style: kind_2
 style:
   font_family: "Helvetica"
 ---
@@ -47,7 +48,7 @@ Dynamic resolution simplifies the user experience.
 ---
 layout: title-and-content
 style:
-  card: { background: "#f0f0f0", radius: "8pt", shadow: true }
+  card: { background: "#f0f0f0", color: "#000", radius: "8pt", shadow: true }
 ---
 # 3. Title + 4 Cards (5 slots)
 *-*
@@ -103,7 +104,7 @@ Content layout with 4 slots.
 ---
 layout: content
 style:
-  card: { background: "#fff", shadow: true, radius: "4pt", content_align: { horizontal: center } }
+  card: { background: "#fff", color: "#000", shadow: true, radius: "4pt", content_align: { horizontal: center } }
 ---
 # 1
 *-*
@@ -159,7 +160,7 @@ Analysis
 ---
 layout: content
 style:
-  card: { background: "#fff", shadow: true, content_align: { horizontal: center, vertical: middle } }
+  card: { background: "#fff", color: "#000", shadow: true, content_align: { horizontal: center, vertical: middle } }
 ---
 # 1
 *-*
@@ -192,7 +193,7 @@ layout: section-header
 ---
 layout: content
 style:
-  card: { background: "#fff", border: "1pt solid #ccc", radius: "2pt" }
+  card: { background: "#fff", color: "#000", border: "1pt solid #ccc", radius: "2pt" }
 ---
 ![Img 1](https://placehold.co/300x200/1a2a6c/fff.png?text=Photo+1)
 *-*

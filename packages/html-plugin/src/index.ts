@@ -454,6 +454,7 @@ class HtmlPluginStatic {
         if (style.card && slot.id !== 'title' && slot.id !== 'subtitle' && !(style.full_bleed && content.type === 'image')) {
             const card = style.card;
             if (card.background) extraStyles += `background-color: ${card.background}; `;
+            if (card.color) extraStyles += `color: ${card.color}; `;
             if (card.radius) extraStyles += `border-radius: ${card.radius}; `;
             if (card.border) extraStyles += `border: ${card.border}; `;
             if (card.shadow) extraStyles += `box-shadow: 0 4pt 12pt rgba(0,0,0,0.15); `;

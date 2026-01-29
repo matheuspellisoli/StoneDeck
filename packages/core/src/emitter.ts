@@ -35,12 +35,9 @@ export function emitIR(content: string, filePath: string, themeOverride?: string
         }
 
         const layout = getLayout(slide.layout_id, slide.slots.length);
-        // Merge Theme Defaults
-        const defaults = theme.defaults || {};
-        const mergedStyle = { ...defaults, ...slide.style };
-
         // Resolve Style with Theme
-        const resolvedStyle = ThemeLoader.resolveStyle(mergedStyle, theme);
+        // Note: We pass slide.style directly. ThemeLoader will handle defaults and variants.
+        const resolvedStyle = ThemeLoader.resolveStyle(slide.style, theme, slide.variant, slideIdx);
 
         // Process Slots (List, Table, Image detection)
         const processedSlots: SlotContent[] = slide.slots.map(slot => {

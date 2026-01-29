@@ -1,0 +1,58 @@
+name: "Default Theme V2"
+tokens:
+  colors:
+    primary: "#FFFFFF"
+    secondary: "#F0F0F0"
+    accent: "#007BFF"
+    surface: "#FFFFFF"
+    text: "#000000"
+    heading: "#000000"
+    muted: "#666666"
+    
+    # Variant colors
+    kind1_bg: "#E8F4F8"
+    kind2_bg: "#FFF5E6"
+    kind3_bg_start: "#1a2a6c"
+    kind3_bg_mid: "#b21f1f"
+    kind3_bg_end: "#fdbb2d"
+
+  fonts:
+    heading: "Inter"
+    body: "Roboto"
+    mono: "Courier New"
+    serif: "Merriweather"
+    slab: "Roboto Slab"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 18
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    font_family: "slab"
+    color: "accent"
+  
+  kind_2:
+    background:
+      type: "color"
+      value: "kind2_bg"
+    font_family: "serif"
+    color: "text"
+
+  kind_3:
+    background:
+      type: "gradient"
+      colors: ["kind3_bg_start", "kind3_bg_mid", "kind3_bg_end"]
+      direction: "135deg"
+    font_family: "heading"
+    color: "primary" # Light text for dark gradient

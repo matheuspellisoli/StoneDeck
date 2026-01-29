@@ -1,6 +1,6 @@
 ---
 StoneDeck: true
-theme: default
+theme: tech_blue
 title: "Como Criar Agentes no Antigravity"
 style:
   font_family: "Courier"
@@ -9,6 +9,7 @@ style:
 :::slide
 ---
 layout: title
+layout_style: kind_3
 ---
 # Como Criar Agentes no Antigravity
 ## Guia Prático de Skills, Melhores Práticas e Observabilidade
@@ -47,6 +48,7 @@ Ferramentas em um único servidor MCP podem causar "Tool Bloat", confundindo o a
 :::slide
 ---
 layout: section-header
+layout_style: kind_2
 ---
 # Mergulhando nas Skills
 :::

@@ -78,6 +78,7 @@ function parseSlidesV2(content: string): Slide[] {
         }
 
         const layout_id = (config.layout as string) || 'blank';
+        const variant = (config.layout_style as string) || undefined;
         const title = config.title as string | undefined;
         const style = (config.style as any) || {};
 
@@ -85,6 +86,7 @@ function parseSlidesV2(content: string): Slide[] {
 
         slides.push({
             layout_id,
+            variant,
             title,
             style,
             slots

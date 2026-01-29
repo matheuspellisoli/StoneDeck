@@ -1,0 +1,55 @@
+name: "Corporativo V2"
+tokens:
+  colors:
+    primary: "#2980b9"
+    secondary: "#dfe6e9"
+    accent: "#3498db"
+    surface: "#f0f2f5"
+    text: "#2c3e50"
+    heading: "#2980b9"
+    border: "#34495e"
+    
+    # Variant Colors
+    kind1_bg: "#FFFFFF"
+    kind2_bg_start: "#2c3e50"
+    kind2_bg_end: "#4ca1af"
+
+  fonts:
+    heading: "Helvetica-Bold"
+    body: "Helvetica"
+    mono: "Courier New"
+    serif: "Times-Roman"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    color: "primary" # High contrast brand color
+    font_family: "heading"
+
+  kind_2:
+    background:
+      type: "gradient"
+      colors: ["kind2_bg_start", "kind2_bg_end"]
+      direction: "to right"
+    color: "secondary" # Light text on dark
+    font_family: "body"
+
+  kind_3:
+    background:
+      type: "color"
+      value: "secondary"
+    color: "text"
+    font_family: "serif" # Classic corporate report style

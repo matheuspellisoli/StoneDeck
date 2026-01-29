@@ -1,4 +1,4 @@
-name: "StoneDeck Showcase"
+name: "StoneDeck Showcase V2"
 tokens:
   colors:
     primary: "#1E293B"
@@ -6,8 +6,42 @@ tokens:
     accent: "#3B82F6"
     surface: "#F8FAFC"
     text: "#0F172A"
+    heading: "#1E293B"
     muted: "#64748B"
+    
+    # Variants
+    kind1_bg: "#FFFFFF"
+    kind2_bg_start: "#1E293B"
+    kind2_bg_end: "#0F172A"
+
   fonts:
     heading: "Helvetica-Bold"
     body: "Helvetica"
     mono: "Courier"
+
+defaults:
+  background:
+    type: "color"
+    value: "surface"
+  color: "text"
+  font_family: "body"
+  font_size: 20
+  content_align:
+    horizontal: "left"
+    vertical: "top"
+
+variants:
+  kind_1:
+    background:
+      type: "color"
+      value: "kind1_bg"
+    color: "accent"
+    font_family: "heading"
+
+  kind_2:
+    background:
+      type: "gradient"
+      colors: ["kind2_bg_start", "kind2_bg_end"]
+      direction: "to bottom right"
+    color: "surface"
+    font_family: "body"
