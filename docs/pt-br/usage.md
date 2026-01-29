@@ -80,6 +80,7 @@ Use três traços (`---`) para iniciar um novo slide. Imediatamente após os tra
 ```markdown
 ---
 layout: two-columns
+layout_style: kind_1
 title: "Título do Slide"
 ---
 # Coluna Esquerda

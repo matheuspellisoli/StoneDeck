@@ -13,6 +13,33 @@ Definidas diretamente no bloco `style`.
 | `content_align` | Alinhamento global (horizontal e vertical) | `{ horizontal: center, vertical: middle }` |
 | `image_fit` | Comportamento de imagens em slots (`cover` ou `contain`) | `"cover"` |
 | `full_bleed` | Se `true`, a imagem ignora margens e ocupa o canvas total | `true` |
+| `layout_style` | Variação do tema ("kind"). Ex: `kind_1`, `kind_2`, `kind_3` | `"kind_1"` |
+
+---
+
+## 2. Tabelas e Código (Novo)
+
+O StoneDeck suporta nativamente:
+
+### Tabelas
+Tabelas Markdown padrão (GFM) são renderizadas com estilos profissionais.
+
+```markdown
+| Métrica | Q1 | Q2 |
+| :--- | :--- | :--- |
+| Receita | 10k | 12k |
+```
+
+**Formatação Inline**: Você pode usar **negrito**, *itálico* e imagens dentro das células.
+
+### Blocos de Código
+Use três crases para blocos de código. A indentação é preservada.
+
+```javascript
+function hello() {
+  console.log("StoneDeck");
+}
+```
 
 ---
 
@@ -40,6 +67,7 @@ Estiliza os contêineres de conteúdo (slots) em grupo.
 | `border` | Borda no formato CSS | `"1pt solid #ccc"` |
 | `shadow` | Habilita sombra projetada | `true` |
 | `content_align`| Alinhamento interno do conteúdo do cartão | `{ vertical: middle }` |
+| `color` | Cor do texto dentro do cartão (sobrescreve o global) | `"#000000"` |
 | `image_fit` | Sobrescreve o `image_fit` global para imagens no cartão | `"contain"` |
 
 ---

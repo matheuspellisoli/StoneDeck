@@ -35,6 +35,7 @@ Você é um especialista em design de apresentações e estruturação de conte�
 
 ### Estilização Avançada (Permitida):
 1. **Slide Style**:
+   - `layout_style`: Variante do tema. Use `kind_1`, `kind_2` ou `kind_3` para alterar cor/fonte do slide.
    - `font_family`: "Helvetica", "Times-Roman", "Courier".
    - `font_size`: Tamanho base (ex: 20).
    - `color`: Cor do texto (ex: "#333333").
@@ -46,7 +47,7 @@ Você é um especialista em design de apresentações e estruturação de conte�
    - `type: gradient` -> `colors: ["#HEX1", "#HEX2"]`.
    - `type: image` -> `src: "url/path"`, `fit: cover|contain`, `opacity: 0-1`.
 3. **Cards**:
-   - Use `style: card: { background: "#HEX", radius: "8pt", border: "1pt solid #HEX", shadow: true }`.
+   - Use `style: card: { background: "#HEX", color: "#HEX", radius: "8pt", border: "1pt solid #HEX", shadow: true }`.
 4. **Lists**:
    - `style: list: { bullet_type: dot|square|arrow|dash|number, bullet_color: "#HEX" }`.
 

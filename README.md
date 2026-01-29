@@ -9,6 +9,8 @@
 - **Markdown First**: focus on content, not design coordinates.
 - **HTML Export**: Interactive HTML slides (offline capable) that look perfect when printed to PDF.
 - **Smart Layouts**: Unified card grids, big numbers, and split columns that just work.
+- **Rich Content**: Support for **Markdown Tables**, **Code Blocks** with syntax highlighting, and images.
+- **V2 Themes**: Modern themes with dynamic variants (Light, Dark, Gradient) to fit any brand.
 - **Agentic Design**: Automatic adjustments for font sizes and grids based on content density.
 
 ## 🚀 Quick Start
@@ -49,9 +51,7 @@
 
 Full documentation is available in the [`docs`](./docs) folder:
 
-- [🇺🇸 English Documentation](./docs/en/index.md)
 - [🇧🇷 Documentação em Português](./docs/pt-br/index.md)
-- [🇪🇸 Documentación en Español](./docs/es/index.md)
 
 ### Highlights
 - [🤖 AI System Prompt](./docs/prompts/system-prompt.md) - Teach AI to write StoneDeck slides.

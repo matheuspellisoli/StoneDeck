@@ -44,7 +44,7 @@ Ele faz a ponte entre texto cru e apresentações de alto design, impondo um sis
     stonedeck slides.md
     ```
 
-Confira o [Catálogo de Layouts](./layouts) ou o [Guia de Estilos](./styling) para mais!
+Confira o [Catálogo de Layouts](./layouts), o [Guia de Estilos](./styling) ou o novo [Catálogo de Temas](./temas) para mais!
 
 ---
 
