@@ -13,7 +13,7 @@
 
 1.  **Instalar**:
     ```bash
-    npm install
+    npm install -g @stonedeck/cli
     ```
 
 2.  **Crear un archivo (`slides.md`)**:
@@ -39,7 +39,7 @@
 
 3.  **Generar**:
     ```bash
-    npx @stonedeck/cli slides.md
+    stonedeck slides.md
     ```
 
 ¡Revisa el [Catálogo de Diseños](./layouts) o la [Guía de Estilos](./styling) para más!

@@ -15,7 +15,7 @@ Ele faz a ponte entre texto cru e apresentações de alto design, impondo um sis
 
 1.  **Instalar**:
     ```bash
-    npm install
+    npm install -g @stonedeck/cli
     ```
 
 2.  **Criar um arquivo (`slides.md`)**:
@@ -41,7 +41,7 @@ Ele faz a ponte entre texto cru e apresentações de alto design, impondo um sis
 
 3.  **Gerar**:
     ```bash
-    npx @stonedeck/cli slides.md
+    stonedeck slides.md
     ```
 
 Confira o [Catálogo de Layouts](./layouts) ou o [Guia de Estilos](./styling) para mais!

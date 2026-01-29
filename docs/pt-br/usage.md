@@ -6,13 +6,13 @@ O StoneDeck CLI permite converter seus arquivos Markdown em apresentações prof
 
 ### Comando Export (Recomendado)
 ```bash
-npx @stonedeck/cli export <arquivo-entrada> <formato> [opções]
+stonedeck export <arquivo-entrada> <formato> [opções]
 ```
 
 ### Comando Preview
 Gera um HTML temporário (`.preview.html`) e permite observar mudanças em tempo real. Por padrão, **não utiliza o modo offline** para garantir maior velocidade.
 ```bash
-npx @stonedeck/cli preview <arquivo-entrada> [opções]
+stonedeck preview <arquivo-entrada> [opções]
 ```
 
 **Formatos:** `pdf`, `html`
@@ -30,22 +30,22 @@ npx @stonedeck/cli preview <arquivo-entrada> [opções]
 
 **Exportar para PDF:**
 ```bash
-npx @stonedeck/cli export slides.md pdf
+stonedeck export slides.md pdf
 ```
 
 **Modo Watch (Preview em tempo real):**
 ```bash
-npx @stonedeck/cli preview slides.md --watch
+stonedeck preview slides.md --watch
 ```
 
 **Exportar HTML "Online" (sem Base64):**
 ```bash
-npx @stonedeck/cli export slides.md html --no-offline
+stonedeck export slides.md html --no-offline
 ```
 
 **Exportar para HTML (Offline):**
 ```bash
-npx @stonedeck/cli export slides.md html --output minha-aula.html
+stonedeck export slides.md html --output minha-aula.html
 # Gera minha-aula.html (Modo Offline ativado por padrão)
 ```
 
@@ -54,7 +54,7 @@ npx @stonedeck/cli export slides.md html --output minha-aula.html
 
 **Depuração:**
 ```bash
-npx @stonedeck/cli export slides.md html --debug
+stonedeck export slides.md html --debug
 ```
 
 ---

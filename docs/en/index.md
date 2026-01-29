@@ -15,7 +15,7 @@ It bridges the gap between raw text and high-design presentations, enforcing a s
 
 1.  **Install**:
     ```bash
-    npm install
+    npm install -g @stonedeck/cli
     ```
 
 2.  **Create a file (`slides.md`)**:
@@ -41,7 +41,7 @@ It bridges the gap between raw text and high-design presentations, enforcing a s
 
 3.  **Generate**:
     ```bash
-    npx @stonedeck/cli slides.md
+    stonedeck slides.md
     ```
 
 Check out the [Layout Catalog](./layouts) or [Styling Guide](./styling) for more!

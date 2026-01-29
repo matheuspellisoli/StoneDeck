@@ -15,7 +15,7 @@
 
 1.  **Install via NPM**:
     ```bash
-    npm install @stonedeck/cli
+    npm install -g @stonedeck/cli
     ```
 
 2.  **Create your presentation (`slides.md`)**:
@@ -36,12 +36,12 @@
 
 3.  **Preview**:
     ```bash
-    npx @stonedeck/cli preview slides.md --watch
+    stonedeck preview slides.md --watch
     ```
 
 4.  **Export**:
     ```bash
-    npx @stonedeck/cli export slides.md pdf
+    stonedeck export slides.md pdf
     ```
 
 ## 📚 Documentation
