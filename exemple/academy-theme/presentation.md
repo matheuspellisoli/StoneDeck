@@ -8,14 +8,14 @@ author: StoneDeck Demo
 
 :::slide
 ---
-layout: title-slide
+layout: section-header
 ---
 # Apresentação tema acadêmico
 :::
 
 :::slide
 ---
-layout: title-and-body
+layout: title-and-content
 ---
 # 1. Visão Geral
 *-*
@@ -30,9 +30,10 @@ layout: title-and-body
 
 :::slide
 ---
-layout: two-columns
-title: 2. Layout em Colunas
+layout: title-and-content
 ---
+# 2. Layout em Colunas
+*-*
 ### Benefícios
 1.  Organização visual.
 2.  Comparação direta.
@@ -46,25 +47,25 @@ Texto de apoio para explicar o gráfico ou imagem ao lado.
 
 :::slide
 ---
-layout: cards-2
-title: 3. Métricas e Resultados
+layout: title-and-content
 style:
   card:
     background: "#f9f9f9"
     border: "5px solid #800000"
+    shadow: true
 ---
+# 3. Métricas e Resultados
 *-*
 # 85%
 **Crescimento Anual**
 *-*
 # +10k
 **Novos Usuários**
-*-*
 :::
 
 :::slide
 ---
-layout: title-only
+layout: content
 style:
   content_align:
     horizontal: center

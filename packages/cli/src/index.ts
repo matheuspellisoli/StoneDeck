@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { processStoneDeck } from '@stonedeck/core';
 import { PdfPlugin } from '@stonedeck/pdf-plugin';
 import { HtmlPlugin } from '@stonedeck/html-plugin';

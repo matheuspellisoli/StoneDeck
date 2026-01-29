@@ -285,6 +285,37 @@
                     "height": 140
                 }
             ]
+        },
+        {
+            "id": "big-number",
+            "slots": [
+                {
+                    "id": "number",
+                    "x": 50,
+                    "y": 120,
+                    "width": 620,
+                    "height": 165
+                }
+            ]
+        },
+        {
+            "id": "big-number",
+            "slots": [
+                {
+                    "id": "number",
+                    "x": 50,
+                    "y": 100,
+                    "width": 620,
+                    "height": 100
+                },
+                {
+                    "id": "caption",
+                    "x": 50,
+                    "y": 220,
+                    "width": 620,
+                    "height": 60
+                }
+            ]
         }
     ]
 }
