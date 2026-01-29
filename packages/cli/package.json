@@ -1,6 +1,6 @@
 {
     "name": "@stonedeck/cli",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "type": "module",
     "bin": {
         "stonedeck": "./dist/index.js"
@@ -19,8 +19,8 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
-        "@stonedeck/core": "^0.7.0",
-        "@stonedeck/html-plugin": "^0.7.0"
+        "@stonedeck/core": "^0.7.2",
+        "@stonedeck/html-plugin": "^0.7.2"
     },
     "devDependencies": {
         "typescript": "^5.0.0",

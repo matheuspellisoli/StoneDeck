@@ -1,6 +1,6 @@
 {
     "name": "@stonedeck/html-plugin",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "type": "module",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -15,7 +15,7 @@
         "build": "tsc -b"
     },
     "dependencies": {
-        "@stonedeck/core": "^0.7.0"
+        "@stonedeck/core": "^0.7.2"
     },
     "devDependencies": {
         "typescript": "^5.0.0",
