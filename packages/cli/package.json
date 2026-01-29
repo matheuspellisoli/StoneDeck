@@ -1,6 +1,6 @@
 {
     "name": "@stonedeck/cli",
-    "version": "0.7.3",
+    "version": "0.7.4",
     "type": "module",
     "bin": {
         "stonedeck": "./dist/index.js"
