@@ -19,8 +19,8 @@
         "start": "node dist/index.js"
     },
     "dependencies": {
-        "@stonedeck/core": "^0.7.2",
-        "@stonedeck/html-plugin": "^0.7.2"
+        "@stonedeck/core": "^0.7.5",
+        "@stonedeck/html-plugin": "^0.7.5"
     },
     "devDependencies": {
         "typescript": "^5.0.0",
