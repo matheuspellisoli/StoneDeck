@@ -80,9 +80,6 @@ export interface Slide {
   style: SlideStyle;
   slots: SlotContent[]; // Content of each slot (Structured)
   warnings?: string[] | undefined;
-  metrics?: {
-    heights: number[]; // Height of each slot in pt
-  } | undefined;
 }
 
 export interface StoneDeckIR {

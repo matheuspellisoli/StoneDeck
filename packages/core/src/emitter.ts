@@ -3,7 +3,6 @@ import { parseSlides } from './parser/tokenizer.js';
 import { ThemeLoader } from './resolver/theme-loader.js';
 import { validateLayout, getLayout } from './layouts/validator.js';
 import { StoneDeckIR, SlotContent, ListItem, TableCell } from './models/ir.js';
-import { metricsCalculator } from './resolver/metrics.js';
 import { mapMarkdownLists } from './parser/list-mapper.js';
 import { mapMarkdownTable } from './parser/table-mapper.js';
 import { mapMarkdownImage } from './parser/image-mapper.js';
@@ -68,41 +67,13 @@ export function emitIR(content: string, filePath: string, themeOverride?: string
             return slot;
         });
 
-        // Calculate Metrics and Overflow
-        const heights: number[] = [];
-        if (layout) {
-            processedSlots.forEach((slot, slotIdx) => {
-                const slotDef = layout.slots[slotIdx];
-                if (slotDef) {
-                    let contentToMeasure = '';
-                    if (slot.type === 'list') {
-                        contentToMeasure = slot.items.map((i: ListItem) => i.text).join('\n');
-                    } else if (slot.type === 'markdown') {
-                        contentToMeasure = slot.raw;
-                    } else if (slot.type === 'table') {
-                        contentToMeasure = slot.rows.map((r: TableCell[]) => r.map((c: TableCell) => c.text).join(' ')).join('\n');
-                    } else if (slot.type === 'image') {
-                        contentToMeasure = slot.alt || slot.src;
-                    }
 
-                    const estimatedHeight = metricsCalculator.estimateMarkdownHeight(contentToMeasure, resolvedStyle, slotDef.width);
-                    heights.push(estimatedHeight);
-
-                    if (estimatedHeight > slotDef.height) {
-                        warnings.push(`Overflow Warning: Content in slot "${slotDef.id}" (slide ${slideIdx + 1}) exceeds defined height (${estimatedHeight.toFixed(1)}pt > ${slotDef.height}pt)`);
-                    }
-                }
-            });
-        }
 
         return {
             ...slide,
             style: resolvedStyle,
             slots: processedSlots,
-            warnings: warnings.length > 0 ? warnings : undefined,
-            metrics: {
-                heights
-            }
+            warnings: warnings.length > 0 ? warnings : undefined
         };
     });
 

@@ -30,7 +30,5 @@ ir.slides.forEach((slide, index) => {
         console.log("No warnings.");
     }
 
-    if (slide.metrics) {
-        console.log("Metrics (Heights):", slide.metrics.heights);
-    }
+
 });
